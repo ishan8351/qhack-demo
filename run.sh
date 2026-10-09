@@ -20,7 +20,7 @@ pip install --upgrade pip --quiet
 pip install -r requirements.txt --quiet
 
 # 3. Test Verification
-echo "[+] Running automated test suite (82 tests)..."
+echo "[+] Running automated test suite (84 tests)..."
 pytest tests/ -q
 
 echo "=========================================================="

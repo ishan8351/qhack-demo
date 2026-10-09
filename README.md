@@ -4,7 +4,7 @@
 
 [![NIST PQC](https://img.shields.io/badge/NIST%20PQC-FIPS%20203%20%7C%20204-0284c7.svg)](https://csrc.nist.gov/pubs/fips/203/final)
 [![CycloneDX 1.6](https://img.shields.io/badge/CBOM-CycloneDX%201.6-10B981.svg)](https://cyclonedx.org/capabilities/cbom)
-[![Tests](https://img.shields.io/badge/Tests-82%20Passed-10B981.svg)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-84%20Passed-10B981.svg)](tests/)
 [![Python](https://img.shields.io/badge/Python-3.14-38BDF8.svg)](https://python.org)
 
 ## Hackathon deliverables
@@ -14,7 +14,7 @@
 | Idea presentation | [`Q-SHIELD.pptx.pdf`](Q-SHIELD.pptx.pdf) and [10-Slide Blueprint](docs/winning_pitch_deck_blueprint.md) | Official 10-slide deck covering problem analysis, Mosca inequality, system design, circuit simulation, and validation. |
 | Demo video script | [`docs/demo_video_script.md`](docs/demo_video_script.md) | Three-minute voiceover script and scene guide. |
 | Working prototype | `http://127.0.0.1:8000` and [`notebooks/shor_circuit_simulation.ipynb`](notebooks/shor_circuit_simulation.ipynb) | Interactive web console (FastAPI) and runnable Qiskit circuit notebook. |
-| Code repository | Current workspace | 82 automated pytest cases, one-click `./run.sh` launcher, and seeded banking benchmark (`QuantumBank`). |
+| Code repository | Current workspace | 84 automated pytest cases, one-click `./run.sh` launcher, and seeded banking benchmark (`QuantumBank`). |
 
 ## The migration window
 
@@ -61,7 +61,7 @@ Validated against `benchmarks/quantumbank`, a polyglot banking repository contai
 - 27 of 27 seeded cryptographic assets detected across Python, Java, Go, JavaScript, configuration files, and certificates.
 - Zero false positive detections from code comments or documentation.
 - 8,954 bytes total handshake payload, adhering to FIPS 203 and 204 wire specifications.
-- 82 automated test cases passing in under two seconds (`pytest tests/ -v`).
+- 84 automated test cases passing in under two seconds (`pytest tests/ -v`).
 - Five composite moduli factored with exact Fourier peak interference matching ($Q/r = 64$ for $N=15, a=7$).
 - Malicious Git clone targets and ZIP-slip directory traversals blocked during scanning.
 

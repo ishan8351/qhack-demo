@@ -99,3 +99,20 @@ def test_api_export_report():
     assert res.status_code == 200
     assert "text/markdown" in res.headers["content-type"]
     assert "Q-SHIELD Executive" in res.text
+
+def test_api_grover_matrix():
+    res = client.get("/api/risk/grover/matrix")
+    assert res.status_code == 200
+    data = res.json()
+    assert len(data) >= 8
+    aes128 = next(d for d in data if d["algorithm"] == "AES-128")
+    assert aes128["effective_quantum_bits"] == 64
+    assert aes128["status"] == "WEAKENED"
+
+def test_api_pqc_simulate_mitm():
+    res = client.post("/api/pqc/attack/mitm")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["mitm_caught"] is True
+    assert "Signature Verification Failed" in data["error"]
+

@@ -305,7 +305,7 @@ System capabilities demonstrated:
 +-------------------------------------------------------------------------------+
 |  Results / Validation: Validated on a seeded bank, end to end                 |
 +-------------------+-------------------+-------------------+-------------------+
-|     27 / 27       |     33 -> 84      |    8,954 BYTES    |        82         |
+|     27 / 27       |     33 -> 84      |    8,954 BYTES    |        84         |
 |  seeded crypto    |  readiness score  |  hybrid ML-KEM-   |  automated tests  |
 |  assets found in  |  after roadmap    |  768 + ML-DSA-65  |  passing, tamper, |
 |  QuantumBank, 0   |  phases 1-3       |  handshake, a few |  replay and MITM  |
@@ -332,7 +332,7 @@ Quantitative benchmarks:
 - 27 of 27 assets identified: Full recall in QuantumBank across Python, Java, JavaScript, Go, SSH configs, and certificates, with zero hits on comments or documentation.
 - 33 -> 84 -> 96 readiness progression: Readiness score recalculates dynamically across the four roadmap phases.
 - 8,954 bytes wire footprint: Complete hybrid handshake payload adhering to NIST FIPS 203 and 204 specifications.
-- 82 automated tests passing: Complete test suite verifying handshake mechanics, tamper rejection, replay defenses, and API integrity.
+- 84 automated tests passing: Complete test suite verifying handshake mechanics, tamper rejection, replay defenses, and API integrity.
 
 Additional verification results:
 - Statevector Shor simulation factors 15, 21, 143, 221, and 247; interference peaks match theoretical values.

@@ -9,7 +9,7 @@ install:
 	.venv/bin/pip install -r requirements.txt
 
 test:
-	@echo "Running all 82 automated tests..."
+	@echo "Running all 84 automated tests..."
 	.venv/bin/pytest tests/ -v
 
 run:

@@ -1,21 +1,24 @@
-// Q-SHIELD Frontend Application Controller
+// Q-SHIELD Presentation Console Application Controller
 document.addEventListener("DOMContentLoaded", () => {
     initAmbientHeader();
     initTheme();
-    initNavigation();
+    initStepper();
     initWelcomeHero();
-    initSimulator();
     initMoscaSliders();
-    initPQCGateway();
+    initQuantumSuite();
+    initPQCDiffenseSuite();
     initCopilot();
     
-    // Check if CBOM already exists
+    // Check if initial CBOM exists
     fetchLatestCBOM();
 });
 
 let currentCBOM = null;
+let currentStep = 1;
 
-/* 1. Ambient Wave Header Canvas (Slow, continuous quantum probability wave) */
+/* ========================================================================== */
+/* 1. Ambient Wave Header Canvas (Continuous Quantum Wave)                   */
+/* ========================================================================== */
 function initAmbientHeader() {
     const canvas = document.getElementById("waveCanvas");
     if (!canvas) return;
@@ -34,10 +37,10 @@ function initAmbientHeader() {
         ctx.clearRect(0, 0, width, height);
 
         const isCreme = document.documentElement.getAttribute("data-theme") === "creme";
-        const waveColor = isCreme ? "rgba(2, 132, 199, 0.15)" : "rgba(56, 189, 248, 0.18)";
-        const waveColor2 = isCreme ? "rgba(5, 150, 105, 0.08)" : "rgba(16, 185, 129, 0.12)";
+        const waveColor = isCreme ? "rgba(2, 132, 199, 0.16)" : "rgba(56, 189, 248, 0.18)";
+        const waveColor2 = isCreme ? "rgba(5, 150, 105, 0.09)" : "rgba(16, 185, 129, 0.12)";
 
-        // First gentle sine wave
+        // First gentle quantum probability wave
         ctx.beginPath();
         ctx.moveTo(0, height / 2);
         for (let x = 0; x < width; x += 4) {
@@ -59,13 +62,15 @@ function initAmbientHeader() {
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        phase += 0.008; // Very slow, ambient movement
+        phase += 0.008;
         requestAnimationFrame(renderWave);
     }
     renderWave();
 }
 
-/* 2. Theme Management (Creme <-> Slate) */
+/* ========================================================================== */
+/* 2. Theme Management (Creme <-> Slate)                                      */
+/* ========================================================================== */
 function initTheme() {
     const themeBtn = document.getElementById("themeToggleBtn");
     const currentTheme = localStorage.getItem("qshield-theme") || "slate";
@@ -89,23 +94,58 @@ function updateThemeBtnText(theme) {
     }
 }
 
-/* 3. Navigation */
-function initNavigation() {
-    const pills = document.querySelectorAll(".nav-pill");
-    pills.forEach(pill => {
-        pill.addEventListener("click", () => {
-            pills.forEach(p => p.classList.remove("active"));
-            pill.classList.add("active");
-
-            const tabName = pill.getAttribute("data-tab");
-            document.querySelectorAll(".tab-pane").forEach(pane => pane.classList.remove("active"));
-            const targetPane = document.getElementById(`tab-${tabName}`);
-            if (targetPane) targetPane.classList.add("active");
+/* ========================================================================== */
+/* 3. Persistent Guided Stepper Navigation                                   */
+/* ========================================================================== */
+function initStepper() {
+    const stepBtns = document.querySelectorAll(".step-btn");
+    stepBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const stepNum = parseInt(btn.getAttribute("data-step"), 10);
+            goToStep(stepNum);
         });
     });
 }
 
-/* 4. Welcome Hero & Benchmark Scanning */
+window.goToStep = function(stepNum) {
+    currentStep = stepNum;
+
+    // Update Step Buttons
+    const stepBtns = document.querySelectorAll(".step-btn");
+    stepBtns.forEach(btn => {
+        const num = parseInt(btn.getAttribute("data-step"), 10);
+        btn.classList.remove("active");
+        if (num < stepNum) {
+            btn.classList.add("completed");
+        } else {
+            btn.classList.remove("completed");
+        }
+        if (num === stepNum) {
+            btn.classList.add("active");
+        }
+    });
+
+    // Update Progress Fill Line
+    const progressFill = document.getElementById("stepperProgressFill");
+    if (progressFill) {
+        const percent = ((stepNum - 1) / 4) * 100;
+        progressFill.style.width = `${Math.max(percent, 8)}%`;
+    }
+
+    // Switch Visible Panes
+    document.querySelectorAll(".step-pane").forEach(pane => pane.classList.remove("active"));
+    const activePane = document.getElementById(`pane-step-${stepNum}`);
+    if (activePane) {
+        activePane.classList.add("active");
+    }
+
+    // Smooth Scroll to Top of Canvas
+    window.scrollTo({ top: 70, behavior: "smooth" });
+};
+
+/* ========================================================================== */
+/* 4. Welcome Hero & Benchmark Scanning                                      */
+/* ========================================================================== */
 function initWelcomeHero() {
     const scanBtn = document.getElementById("heroScanBtn");
     const uploadInput = document.getElementById("zipUploadInput");
@@ -131,17 +171,17 @@ async function runScanBenchmark() {
     if (progressEl) progressEl.style.display = "block";
 
     const steps = [
-        "Ingesting Polyglot Source Trees (Python, Java, Go, JS)...",
+        "Traversing Polyglot Source Trees (Python, Java, Go, JS)...",
         "Stripping comments and docstrings (Zero False Positive Filter)...",
-        "Parsing X.509 certificates and SSH/TLS cipher configurations...",
-        "Evaluating Shor & Grover algorithmic vulnerability metrics...",
+        "Parsing X.509 certificates and Nginx/SSH TLS cipher directives...",
+        "Evaluating Shor prime-factoring & Grover key space degradation...",
         "Synthesizing CycloneDX 1.6 Cryptographic Bill of Materials..."
     ];
 
     for (let i = 0; i < steps.length; i++) {
         if (statusText) statusText.textContent = steps[i];
         if (barFill) barFill.style.width = `${((i + 1) / steps.length) * 85}%`;
-        await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 180));
     }
 
     try {
@@ -149,7 +189,7 @@ async function runScanBenchmark() {
         const data = await resp.json();
         if (barFill) barFill.style.width = "100%";
         if (statusText) statusText.textContent = "Scan complete! Discovered 27 cryptographic assets.";
-        await new Promise(r => setTimeout(r, 400));
+        await new Promise(r => setTimeout(r, 350));
         
         applyCBOMData(data);
         hideHeroShowDashboard();
@@ -165,7 +205,7 @@ async function uploadAndScanZip(file) {
     const statusText = document.getElementById("scanStatusText");
     const progressEl = document.getElementById("scanProgress");
     if (progressEl) progressEl.style.display = "block";
-    if (statusText) statusText.textContent = `Uploading & scanning ${file.name}...`;
+    if (statusText) statusText.textContent = `Analyzing ${file.name}...`;
 
     try {
         const resp = await fetch("/api/scan/upload", { method: "POST", body: formData });
@@ -197,14 +237,14 @@ async function fetchLatestCBOM() {
             hideHeroShowDashboard();
         }
     } catch (e) {
-        console.log("No initial CBOM to load");
+        console.log("No initial scan on startup");
     }
 }
 
 function applyCBOMData(data) {
     currentCBOM = data;
 
-    // Header chip
+    // Header score chip
     const meterVal = document.getElementById("headerScoreVal");
     if (meterVal) meterVal.textContent = `${data.readiness_score}/100`;
 
@@ -219,7 +259,7 @@ function applyCBOMData(data) {
     if (scoreEl) scoreEl.textContent = `${data.readiness_score}/100`;
     if (targetEl) targetEl.textContent = data.target_name;
 
-    // Populate CBOM Table
+    // Populate CBOM Table & Roadmap
     renderCBOMTable(data.findings);
     loadRoadmap();
 }
@@ -245,26 +285,172 @@ function renderCBOMTable(findings) {
             <td>${f.asset_type}</td>
             <td><code>${f.file_path}:${f.line_number}</code></td>
             <td>${riskBadge}</td>
-            <td><button class="btn-secondary" style="padding: 4px 10px; font-size: 0.76rem;" onclick="viewDiff('${f.id}')">View Diff</button></td>
+            <td><button class="btn-secondary" style="padding: 4px 10px; font-size: 0.76rem;" onclick="openDiffModal('${f.id}')">Inspect Diff</button></td>
         `;
         tbody.appendChild(tr);
     });
 
-    // Table Filter
+    // Table Filter and Search
     const searchInput = document.getElementById("cbomSearchInput");
-    if (searchInput) {
-        searchInput.oninput = (e) => {
-            const query = e.target.value.toLowerCase();
-            const rows = tbody.querySelectorAll("tr");
-            rows.forEach(r => {
-                r.style.display = r.textContent.toLowerCase().includes(query) ? "" : "none";
-            });
-        };
+    const riskFilter = document.getElementById("cbomRiskFilter");
+
+    function applyFilter() {
+        const query = searchInput ? searchInput.value.toLowerCase() : "";
+        const risk = riskFilter ? riskFilter.value : "ALL";
+
+        const rows = tbody.querySelectorAll("tr");
+        rows.forEach(r => {
+            const text = r.textContent.toLowerCase();
+            const matchesQuery = text.includes(query);
+            let matchesRisk = true;
+            if (risk === "BROKEN") matchesRisk = text.includes("shor broken");
+            if (risk === "WEAKENED") matchesRisk = text.includes("grover weakened");
+            r.style.display = matchesQuery && matchesRisk ? "" : "none";
+        });
     }
+
+    if (searchInput) searchInput.oninput = applyFilter;
+    if (riskFilter) riskFilter.onchange = applyFilter;
 }
 
-/* 5. Quantum Threat Simulator */
-function initSimulator() {
+/* ========================================================================== */
+/* 5. Code Diff & Developer Ticket Modal Dialog                              */
+/* ========================================================================== */
+window.openDiffModal = async function(findingId) {
+    const modal = document.getElementById("diffModal");
+    if (!modal) return;
+
+    try {
+        const res = await fetch(`/api/migration/diff/${findingId}`);
+        const data = await res.json();
+
+        const f = data.finding;
+        document.getElementById("modalFindingTitle").textContent = `Remediation Diff: ${f.id} (${f.algorithm})`;
+        document.getElementById("modalFindingMeta").textContent = `${f.file_path}:${f.line_number} • Target Phase ${f.phase}`;
+        document.getElementById("modalRecommendationText").textContent = f.recommended_replacement;
+
+        // Render syntax styled diff
+        const preDiff = document.getElementById("modalDiffPre");
+        if (preDiff) {
+            const lines = data.diff.split("\n");
+            preDiff.innerHTML = lines.map(line => {
+                if (line.startsWith("+") && !line.startsWith("+++")) {
+                    return `<span class="diff-add">${escapeHtml(line)}</span>`;
+                } else if (line.startsWith("-") && !line.startsWith("---")) {
+                    return `<span class="diff-del">${escapeHtml(line)}</span>`;
+                }
+                return `<span>${escapeHtml(line)}</span>`;
+            }).join("");
+        }
+
+        // Render Ticket
+        const preTicket = document.getElementById("modalTicketPre");
+        if (preTicket) {
+            preTicket.textContent = data.ticket;
+        }
+
+        modal.style.display = "flex";
+    } catch (err) {
+        alert("Failed to load diff: " + err.message);
+    }
+};
+
+window.closeDiffModal = function() {
+    const modal = document.getElementById("diffModal");
+    if (modal) modal.style.display = "none";
+};
+
+window.copyTicketMarkdown = function() {
+    const preTicket = document.getElementById("modalTicketPre");
+    if (preTicket) {
+        navigator.clipboard.writeText(preTicket.textContent).then(() => {
+            const btn = document.getElementById("copyTicketBtn");
+            if (btn) btn.textContent = "✓ Copied to Clipboard!";
+            setTimeout(() => {
+                if (btn) btn.textContent = "📋 Copy Ticket Markdown";
+            }, 2000);
+        });
+    }
+};
+
+function escapeHtml(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/* ========================================================================== */
+/* 6. Step 02: Mosca Inequality Simulator & Grover Matrix                     */
+/* ========================================================================== */
+function initMoscaSliders() {
+    const sX = document.getElementById("sliderX");
+    const sY = document.getElementById("sliderY");
+    const sZ = document.getElementById("sliderZ");
+
+    const vX = document.getElementById("valX");
+    const vY = document.getElementById("valY");
+    const vZ = document.getElementById("valZ");
+
+    async function updateMosca() {
+        if (!sX || !sY || !sZ) return;
+        const X = parseFloat(sX.value);
+        const Y = parseFloat(sY.value);
+        const Z = parseFloat(sZ.value);
+
+        if (vX) vX.textContent = `${X.toFixed(1)} yrs`;
+        if (vY) vY.textContent = `${Y.toFixed(1)} yrs`;
+        if (vZ) vZ.textContent = `${Z.toFixed(1)} yrs`;
+
+        const resp = await fetch("/api/risk/mosca", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ shelf_life_years: X, migration_time_years: Y, q_day_years: Z })
+        });
+        const data = await resp.json();
+
+        const badge = document.getElementById("moscaExposureBadge");
+        const horizonText = document.getElementById("moscaHorizonText");
+        const verdictText = document.getElementById("moscaVerdictText");
+        const timelineRisk = document.getElementById("timelineRiskFill");
+        const qdayMarker = document.getElementById("timelineQDayMarker");
+        const riskLabel = document.getElementById("timelineRiskEndLabel");
+
+        if (badge) {
+            badge.textContent = data.exposure_level;
+            badge.className = data.is_at_risk ? "badge-broken" : "badge-safe";
+        }
+        if (horizonText) {
+            horizonText.textContent = `Horizon: X (${X.toFixed(1)}y) + Y (${Y.toFixed(1)}y) = ${data.total_risk_horizon}y vs Q-Day (${Z.toFixed(1)}y)`;
+            horizonText.style.color = data.is_at_risk ? "var(--status-danger)" : "var(--status-safe)";
+        }
+        if (verdictText) verdictText.textContent = data.verdict;
+
+        // Update Timeline Visualizer (Scale 0 to 25 years)
+        if (timelineRisk) {
+            const riskPct = Math.min((data.total_risk_horizon / 25) * 100, 100);
+            timelineRisk.style.width = `${riskPct}%`;
+        }
+        if (qdayMarker) {
+            const qPct = Math.min((Z / 25) * 100, 100);
+            qdayMarker.style.left = `${qPct}%`;
+        }
+        if (riskLabel) {
+            riskLabel.textContent = `Exposure Horizon: ${data.total_risk_horizon} yrs`;
+        }
+    }
+
+    if (sX) sX.oninput = updateMosca;
+    if (sY) sY.oninput = updateMosca;
+    if (sZ) sZ.oninput = updateMosca;
+    updateMosca();
+}
+
+/* ========================================================================== */
+/* 7. Step 03: The Full Quantum Threat Suite                                  */
+/* ========================================================================== */
+let circuitStage = 1;
+let circuitPlayInterval = null;
+
+function initQuantumSuite() {
+    // 3A: Shor Simulator
     const runBtn = document.getElementById("runShorBtn");
     const selectN = document.getElementById("shorModulusSelect");
 
@@ -272,7 +458,7 @@ function initSimulator() {
         runBtn.addEventListener("click", async () => {
             const N = parseInt(selectN.value, 10);
             runBtn.disabled = true;
-            runBtn.textContent = "Simulating Statevector IQFT...";
+            runBtn.textContent = "Simulating IQFT...";
 
             try {
                 const res = await fetch("/api/quantum/shor", {
@@ -286,16 +472,37 @@ function initSimulator() {
                 alert(`Simulation failed: ${err.message}`);
             } finally {
                 runBtn.disabled = false;
-                runBtn.textContent = "Run Shor Period-Finding";
+                runBtn.textContent = "Run Period-Finding";
             }
         });
     }
 
-    // Auto-run on load for N=143
+    // Initialize Circuit Visualizer Stage 1
+    renderCircuitStage(1);
+
+    // Initialize Phase Wheel & Density Grid
+    renderPhaseWheel(4);
+    renderDensityGrid([0, 64, 128, 192]);
+
+    // Initial Telemetry Load
+    loadQubitTelemetry(2048);
+
+    // Auto-run Shor for N=143
     setTimeout(() => {
         if (runBtn) runBtn.click();
-    }, 500);
+    }, 400);
 }
+
+window.switchQuantumSub = function(subId) {
+    document.querySelectorAll(".quantum-subpane").forEach(p => p.style.display = "none");
+    const target = document.getElementById(`qsub-${subId}`);
+    if (target) target.style.display = "block";
+
+    // Update active subnav pill
+    const pills = document.querySelectorAll("#pane-step-3 .subnav-pill");
+    pills.forEach(p => p.classList.remove("active"));
+    event.target.classList.add("active");
+};
 
 function renderShorResults(data) {
     const outBox = document.getElementById("shorOutputText");
@@ -307,8 +514,8 @@ function renderShorResults(data) {
     if (outBox) {
         outBox.innerHTML = `
 <strong>Target Modulus N:</strong> ${sim.N} | <strong>Base a:</strong> ${sim.base_a}
-<strong>Order r:</strong> ${sim.true_order_r} | <strong>Register Size Q:</strong> ${sim.register_size_Q} states (${sim.true_order_r}-fold symmetry)
-<strong>Interference Peaks Spacing (Q/r):</strong> ${sim.peak_spacing}
+<strong>Order r:</strong> ${sim.true_order_r} | <strong>Register Size Q:</strong> ${sim.register_size_Q} states (${sim.true_order_r}-fold constructive symmetry)
+<strong>Interference Peak Spacing (Q/r):</strong> ${sim.peak_spacing}
 <strong>Measured State Peaks:</strong> [${sim.peak_indices.join(", ")}]
 <strong>Factored Result:</strong> ${fact.factor_1} × ${fact.factor_2} = ${sim.N} (${fact.method})
         `;
@@ -322,7 +529,7 @@ function renderShorResults(data) {
 
         let bars = sim.sampled_peaks.map(p => {
             const x = (p.state / maxState) * (svgW - 80) + 40;
-            const barH = p.prob * 500;
+            const barH = p.prob * 480;
             const y = svgH - 30 - barH;
             return `
                 <line x1="${x}" y1="${svgH - 30}" x2="${x}" y2="${y}" stroke="var(--accent-primary)" stroke-width="4" stroke-linecap="round"/>
@@ -341,66 +548,294 @@ function renderShorResults(data) {
     }
 }
 
-/* 6. Mosca's Inequality Sliders */
-function initMoscaSliders() {
-    const sX = document.getElementById("sliderX");
-    const sY = document.getElementById("sliderY");
-    const sZ = document.getElementById("sliderZ");
+// 3B: Multi-Qubit Circuit Visualizer
+window.stepCircuitStage = function(delta) {
+    circuitStage = Math.max(1, Math.min(4, circuitStage + delta));
+    renderCircuitStage(circuitStage);
+};
 
-    const vX = document.getElementById("valX");
-    const vY = document.getElementById("valY");
-    const vZ = document.getElementById("valZ");
-
-    async function updateMosca() {
-        if (!sX || !sY || !sZ) return;
-        const X = parseFloat(sX.value);
-        const Y = parseFloat(sY.value);
-        const Z = parseFloat(sZ.value);
-
-        vX.textContent = `${X}y`;
-        vY.textContent = `${Y}y`;
-        vZ.textContent = `${Z}y`;
-
-        const resp = await fetch("/api/risk/mosca", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ shelf_life_years: X, migration_time_years: Y, q_day_years: Z })
-        });
-        const data = await resp.json();
-
-        const statusBadge = document.getElementById("moscaExposureBadge");
-        const horizonEl = document.getElementById("moscaHorizonText");
-        const verdictEl = document.getElementById("moscaVerdictText");
-
-        if (statusBadge) {
-            statusBadge.textContent = data.exposure_level;
-            statusBadge.className = data.is_at_risk ? "badge-broken" : "badge-safe";
-        }
-        if (horizonEl) {
-            horizonEl.textContent = `Horizon: X + Y = ${data.total_risk_horizon}y vs Q-Day (Z) = ${data.q_day_years_Z}y`;
-        }
-        if (verdictEl) verdictEl.textContent = data.verdict;
+window.toggleCircuitPlay = function() {
+    if (circuitPlayInterval) {
+        clearInterval(circuitPlayInterval);
+        circuitPlayInterval = null;
+    } else {
+        circuitPlayInterval = setInterval(() => {
+            circuitStage = (circuitStage % 4) + 1;
+            renderCircuitStage(circuitStage);
+        }, 1500);
     }
+};
 
-    if (sX) sX.oninput = updateMosca;
-    if (sY) sY.oninput = updateMosca;
-    if (sZ) sZ.oninput = updateMosca;
-    updateMosca();
+function renderCircuitStage(stage) {
+    const svgWrap = document.getElementById("circuitSvgWrap");
+    const expBox = document.getElementById("circuitStageExplanation");
+
+    const explanations = [
+        "Stage 1: Initialization & Superposition: Counting qubits pass through Hadamard gates H^⊗n to form an equal superposition across all 2^n states.",
+        "Stage 2: Modular Exponentiation Oracle: Quantum oracle applies controlled unitary transformation U_a |x⟩|y⟩ = |x⟩|y ⊕ (a^x mod N)⟩.",
+        "Stage 3: Inverse Quantum Fourier Transform (IQFT): Applies controlled-phase rotations R_k to translate periodic phase offsets into constructive interference peaks.",
+        "Stage 4: Measurement & Factor Extraction: Wavefunction collapses into period multiple s = j · (Q/r). Continued fraction expansion extracts r."
+    ];
+
+    if (expBox) expBox.innerHTML = `<strong>${explanations[stage - 1]}</strong>`;
+
+    if (svgWrap) {
+        const svgW = 740;
+        const svgH = 160;
+        
+        // Highlight active gate by stage
+        const hGlow = stage === 1 ? 'stroke="var(--accent-primary)" stroke-width="3" filter="drop-shadow(0 0 6px var(--accent-primary))"' : 'stroke="var(--border-strong)"';
+        const uGlow = stage === 2 ? 'stroke="var(--accent-primary)" stroke-width="3" filter="drop-shadow(0 0 6px var(--accent-primary))"' : 'stroke="var(--border-strong)"';
+        const iqftGlow = stage === 3 ? 'stroke="var(--accent-primary)" stroke-width="3" filter="drop-shadow(0 0 6px var(--accent-primary))"' : 'stroke="var(--border-strong)"';
+        const mGlow = stage === 4 ? 'stroke="var(--status-safe)" stroke-width="3" filter="drop-shadow(0 0 6px var(--status-safe))"' : 'stroke="var(--border-strong)"';
+
+        svgWrap.innerHTML = `
+            <svg width="100%" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" style="background: var(--bg-base); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <!-- Qubit Wires -->
+                <line x1="50" y1="40" x2="690" y2="40" stroke="var(--border-subtle)" stroke-width="2"/>
+                <line x1="50" y1="75" x2="690" y2="75" stroke="var(--border-subtle)" stroke-width="2"/>
+                <line x1="50" y1="120" x2="690" y2="120" stroke="var(--border-subtle)" stroke-width="2"/>
+
+                <!-- Qubit Labels -->
+                <text x="20" y="44" fill="var(--text-secondary)" font-size="12" font-family="monospace">|0⟩</text>
+                <text x="20" y="79" fill="var(--text-secondary)" font-size="12" font-family="monospace">|0⟩</text>
+                <text x="20" y="124" fill="var(--text-secondary)" font-size="12" font-family="monospace">|1⟩</text>
+
+                <!-- Stage 1: Hadamard Gates -->
+                <rect x="90" y="24" width="36" height="32" rx="4" fill="var(--bg-surface-elevated)" ${hGlow}/>
+                <text x="108" y="45" fill="var(--text-primary)" font-size="13" font-weight="bold" text-anchor="middle">H</text>
+                <rect x="90" y="59" width="36" height="32" rx="4" fill="var(--bg-surface-elevated)" ${hGlow}/>
+                <text x="108" y="80" fill="var(--text-primary)" font-size="13" font-weight="bold" text-anchor="middle">H</text>
+
+                <!-- Stage 2: Modular Exponentiation Box -->
+                <rect x="200" y="20" width="130" height="115" rx="6" fill="var(--bg-surface-elevated)" ${uGlow}/>
+                <text x="265" y="75" fill="var(--text-primary)" font-size="13" font-weight="bold" text-anchor="middle">U_a (mod N)</text>
+
+                <!-- Stage 3: IQFT Box -->
+                <rect x="390" y="20" width="120" height="75" rx="6" fill="var(--bg-surface-elevated)" ${iqftGlow}/>
+                <text x="450" y="62" fill="var(--text-primary)" font-size="13" font-weight="bold" text-anchor="middle">IQFT †</text>
+
+                <!-- Stage 4: Measurement Detectors -->
+                <rect x="570" y="24" width="40" height="32" rx="4" fill="var(--bg-surface-elevated)" ${mGlow}/>
+                <text x="590" y="45" fill="var(--text-primary)" font-size="14" text-anchor="middle">∡</text>
+                <rect x="570" y="59" width="40" height="32" rx="4" fill="var(--bg-surface-elevated)" ${mGlow}/>
+                <text x="590" y="80" fill="var(--text-primary)" font-size="14" text-anchor="middle">∡</text>
+
+                <text x="640" y="62" fill="var(--accent-primary)" font-size="13" font-family="monospace">➔ r</text>
+            </svg>
+        `;
+    }
 }
 
-/* 7. PQC Gateway & Attack Playground */
-function initPQCGateway() {
-    const sendBtn = document.getElementById("pqcSendBtn");
+// 3C: Factorization Race
+window.startFactorizationRace = function() {
+    const keySelect = document.getElementById("raceKeySelect");
+    const bits = parseInt(keySelect.value, 10);
+
+    const cBar = document.getElementById("classicalRaceBar");
+    const qBar = document.getElementById("quantumRaceBar");
+    const cTime = document.getElementById("classicalTimeEst");
+    const qTime = document.getElementById("quantumTimeEst");
+    const cStatus = document.getElementById("classicalStatusText");
+    const qStatus = document.getElementById("quantumStatusText");
+
+    cBar.style.width = "0%";
+    qBar.style.width = "0%";
+
+    if (bits === 32) {
+        cTime.textContent = "Estimated Time: 0.05 ms";
+        qTime.textContent = "Estimated Time: 0.01 ms";
+        animateRace(cBar, 100, 400);
+        animateRace(qBar, 100, 200);
+    } else if (bits === 64) {
+        cTime.textContent = "Estimated Time: 12.4 seconds";
+        qTime.textContent = "Estimated Time: 0.2 seconds";
+        animateRace(cBar, 80, 800);
+        animateRace(qBar, 100, 300);
+    } else if (bits === 512) {
+        cTime.textContent = "Estimated Time: 8.4 CPU-Months";
+        qTime.textContent = "Estimated Time: 14 Minutes";
+        animateRace(cBar, 25, 1000);
+        animateRace(qBar, 100, 400);
+    } else if (bits === 1024) {
+        cTime.textContent = "Estimated Time: 5,000 CPU-Years";
+        qTime.textContent = "Estimated Time: 1.2 Hours";
+        animateRace(cBar, 8, 1200);
+        animateRace(qBar, 100, 500);
+    } else { // 2048
+        cTime.textContent = "Estimated Time: 300,000,000 CPU-Years";
+        qTime.textContent = "Estimated Time: 8.2 Hours";
+        animateRace(cBar, 1.5, 1500);
+        animateRace(qBar, 100, 600);
+    }
+};
+
+function animateRace(bar, targetWidth, duration) {
+    let start = null;
+    function step(timestamp) {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        bar.style.width = `${progress * targetWidth}%`;
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        }
+    }
+    requestAnimationFrame(step);
+}
+
+// 3D: Hardware Telemetry
+window.loadQubitTelemetry = async function(bits) {
+    try {
+        const res = await fetch(`/api/quantum/resources/${bits}`);
+        const data = await res.json();
+        document.getElementById("telLogicalQubits").textContent = data.logical_qubits.toLocaleString();
+        document.getElementById("telQubits2019").textContent = data.physical_noisy_qubits_gidney2019.toLocaleString();
+        document.getElementById("telQubits2025").textContent = data.physical_noisy_qubits_gidney2025.toLocaleString();
+        document.getElementById("telRuntime").textContent = data.estimated_runtime;
+        document.getElementById("telToffoli").textContent = data.toffoli_gate_depth.toExponential(2);
+        document.getElementById("telCodeDistance").textContent = `d = ${data.surface_code_distance}`;
+    } catch (e) {
+        console.error("Telemetry error", e);
+    }
+};
+
+// 3E: Phase Wheel & Density Grid
+function renderPhaseWheel(orderR) {
+    const wrap = document.getElementById("phaseWheelSvgWrap");
+    if (!wrap) return;
+    const size = 180;
+    const r = 65;
+    const cx = size / 2;
+    const cy = size / 2;
+
+    let vectors = "";
+    for (let k = 0; k < orderR; k++) {
+        const theta = (2 * Math.PI * k) / orderR;
+        const x = cx + r * Math.cos(theta);
+        const y = cy + r * Math.sin(theta);
+        vectors += `
+            <line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--accent-primary)" stroke-width="2.5" marker-end="url(#arrow)"/>
+            <circle cx="${x}" cy="${y}" r="4" fill="var(--accent-primary)"/>
+        `;
+    }
+
+    wrap.innerHTML = `
+        <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+            <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--border-subtle)" stroke-width="2" stroke-dasharray="4"/>
+            <line x1="10" y1="${cy}" x2="${size-10}" y2="${cy}" stroke="var(--border-strong)" stroke-width="1"/>
+            <line x1="${cx}" y1="10" x2="${cx}" y2="${size-10}" stroke="var(--border-strong)" stroke-width="1"/>
+            ${vectors}
+        </svg>
+    `;
+}
+
+function renderDensityGrid(peaks) {
+    const wrap = document.getElementById("densityGridWrap");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    for (let i = 0; i < 256; i++) {
+        const cell = document.createElement("div");
+        cell.className = "density-cell";
+        if (peaks.includes(i)) {
+            cell.classList.add("peak");
+        }
+        wrap.appendChild(cell);
+    }
+}
+
+/* ========================================================================== */
+/* 8. Step 04: The Full PQC Active Defense Suite                             */
+/* ========================================================================== */
+let wireSegmentsData = [];
+
+function initPQCDiffenseSuite() {
+    loadHandshakeSegments();
+    initAttackPlayground();
+    startCryptoLogStream();
+}
+
+window.switchPqcSub = function(subId) {
+    document.querySelectorAll(".pqc-subpane").forEach(p => p.style.display = "none");
+    const target = document.getElementById(`pqcsub-${subId}`);
+    if (target) target.style.display = "block";
+
+    const pills = document.querySelectorAll("#pane-step-4 .subnav-pill");
+    pills.forEach(p => p.classList.remove("active"));
+    event.target.classList.add("active");
+};
+
+async function loadHandshakeSegments() {
+    try {
+        const res = await fetch("/api/pqc/handshake");
+        const data = await res.json();
+        wireSegmentsData = data.wire_segments || [];
+        if (wireSegmentsData.length > 0) {
+            inspectWireSegment(0);
+        }
+    } catch (e) {
+        console.error("Handshake segments error", e);
+    }
+}
+
+window.inspectWireSegment = function(index) {
+    if (!wireSegmentsData[index]) return;
+    const seg = wireSegmentsData[index];
+    document.getElementById("wireSegName").textContent = seg.name;
+    document.getElementById("wireSegMeta").textContent = `${seg.standard} • ${seg.bytes} Bytes`;
+    document.getElementById("wireSegDesc").textContent = seg.description;
+    document.getElementById("wireSegHex").textContent = seg.hex_sample;
+};
+
+// 4B: Attack Playground & MITM Harness
+function initAttackPlayground() {
     const tamperBtn = document.getElementById("pqcTamperBtn");
     const replayBtn = document.getElementById("pqcReplayBtn");
-    const inputMsg = document.getElementById("pqcMsgInput");
-    const chatStream = document.getElementById("pqcChatStream");
+    const mitmBtn = document.getElementById("pqcMitmBtn");
+    const packet = document.getElementById("topoPacket");
 
+    if (tamperBtn) {
+        tamperBtn.addEventListener("click", async () => {
+            animatePacket();
+            const res = await fetch("/api/pqc/attack/tamper", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: "TAMPER PAYLOAD" })
+            });
+            const data = await res.json();
+            showMitmBanner("danger", `🚨 [BIT-FLIP TAMPER INTERCEPTED] ${data.error}`, data.action);
+        });
+    }
+
+    if (replayBtn) {
+        replayBtn.addEventListener("click", async () => {
+            animatePacket();
+            const res = await fetch("/api/pqc/attack/replay", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: "REPLAY TRANSACTION" })
+            });
+            const data = await res.json();
+            showMitmBanner("warn", `🛑 [REPLAY ATTACK DISCARDED] ${data.error}`, data.action);
+        });
+    }
+
+    if (mitmBtn) {
+        mitmBtn.addEventListener("click", async () => {
+            animatePacket();
+            const res = await fetch("/api/pqc/attack/mitm", { method: "POST" });
+            const data = await res.json();
+            showMitmBanner("danger", `🔒 [LATTICE SIGNATURE FORGERY BLOCKED] ${data.error}`, data.action);
+        });
+    }
+
+    // 4G: Live Chat
+    const sendBtn = document.getElementById("pqcSendBtn");
+    const msgInput = document.getElementById("pqcMsgInput");
     if (sendBtn) {
         sendBtn.addEventListener("click", async () => {
-            const msg = inputMsg.value.trim() || "AUTHORIZE WIRE TRANSFER #9872";
-            appendChat("user", msg);
-            inputMsg.value = "";
+            const msg = (msgInput ? msgInput.value.trim() : "") || "TRANSFER $50,000 TO ACCOUNT #49281";
+            appendPqcChat("user", msg);
+            if (msgInput) msgInput.value = "";
 
             const res = await fetch("/api/pqc/send", {
                 method: "POST",
@@ -408,38 +843,35 @@ function initPQCGateway() {
                 body: JSON.stringify({ message: msg })
             });
             const data = await res.json();
-            appendChat("agent", `🛡️ [ML-KEM-768/AES-256-GCM Verified] Server Received: "${data.verified_decrypted}" (Ciphertext: ${data.ciphertext_hex})`);
-        });
-    }
-
-    if (tamperBtn) {
-        tamperBtn.addEventListener("click", async () => {
-            appendChat("user", "⚠️ INJECTING ADVERSARIAL BIT-FLIP TAMPER IN TRANSMISSION...");
-            const res = await fetch("/api/pqc/attack/tamper", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: "TAMPER TEST PAYLOAD" })
-            });
-            const data = await res.json();
-            appendChat("agent", `🚨 [ATTACK MITIGATED] ${data.error} — ${data.action}`);
-        });
-    }
-
-    if (replayBtn) {
-        replayBtn.addEventListener("click", async () => {
-            appendChat("user", "🔄 SIMULATING REPLAY ATTACK (DUPLICATING TRANSMITTED PACKET)...");
-            const res = await fetch("/api/pqc/attack/replay", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: "REPLAY TRANSACTION" })
-            });
-            const data = await res.json();
-            appendChat("agent", `🛑 [ATTACK MITIGATED] ${data.error} — ${data.action}`);
+            appendPqcChat("agent", `🛡️ [ML-KEM/AES-256-GCM Decrypted] Server: "${data.verified_decrypted}" (Ciphertext: ${data.ciphertext_hex})`);
         });
     }
 }
 
-function appendChat(role, text) {
+function animatePacket() {
+    const packet = document.getElementById("topoPacket");
+    if (!packet) return;
+    packet.style.left = "48%";
+    setTimeout(() => {
+        packet.style.left = "80%";
+    }, 400);
+    setTimeout(() => {
+        packet.style.left = "20%";
+    }, 1200);
+}
+
+function showMitmBanner(type, title, desc) {
+    const banner = document.getElementById("mitmStatusBanner");
+    const bTitle = document.getElementById("mitmStatusTitle");
+    const bDesc = document.getElementById("mitmStatusDesc");
+    if (!banner) return;
+    banner.style.display = "block";
+    banner.className = `mitm-status-banner ${type}`;
+    if (bTitle) bTitle.textContent = title;
+    if (bDesc) bDesc.textContent = desc;
+}
+
+function appendPqcChat(role, text) {
     const stream = document.getElementById("pqcChatStream");
     if (!stream) return;
     const div = document.createElement("div");
@@ -449,7 +881,44 @@ function appendChat(role, text) {
     stream.scrollTop = stream.scrollHeight;
 }
 
-/* 8. Migration Roadmap */
+// 4D: Cryptographic Monospace Terminal Stream
+function startCryptoLogStream() {
+    const term = document.getElementById("cryptoLogStream");
+    if (!term) return;
+
+    const logs = [
+        "[INIT] Initializing OpenSSL 3.5.9 PQC engine with FIPS 203/204 support",
+        "[KEM_KEYGEN] Generated 32-byte entropy seed from kernel CSPRNG",
+        "[LATTICE_OP] Sampling polynomial matrix A in R_q^(3x3) over q=3329",
+        "[ML-KEM-768] Public key vector synthesized (1,184 Bytes wire footprint)",
+        "[TLS_HANDSHAKE] Emitting ClientHello with hybrid group x25519_mlkem768",
+        "[SERVER_RECV] Received ClientHello: extracting ML-KEM encapsulation key",
+        "[FO_TRANSFORM] Applying Fujisaki-Okamoto rejection sampling transform",
+        "[ENCAPSULATE] Computed ciphertext vector (u, v): 1,088 Bytes",
+        "[SIG_GEN] Generating ML-DSA-65 lattice signature (3,309 Bytes wire footprint)",
+        "[KDF] Deriving 256-bit session key via HKDF-SHA256(SS_classical || SS_mlkem)",
+        "[SECURE_TUNNEL] Established authenticated AES-256-GCM symmetric session",
+        "[REPLAY_GUARD] Sliding-window anti-replay filter active (Window size: 1024 packets)"
+    ];
+
+    let i = 0;
+    function addLog() {
+        if (i < logs.length) {
+            const p = document.createElement("div");
+            const time = new Date().toISOString().substring(11, 19);
+            p.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-tag">${logs[i]}</span>`;
+            term.appendChild(p);
+            term.scrollTop = term.scrollHeight;
+            i++;
+            setTimeout(addLog, 450);
+        }
+    }
+    setTimeout(addLog, 800);
+}
+
+/* ========================================================================== */
+/* 9. Step 05: Migration Roadmap & Grounded AI Copilot                       */
+/* ========================================================================== */
 async function loadRoadmap() {
     const listEl = document.getElementById("roadmapPhaseList");
     if (!listEl) return;
@@ -461,15 +930,18 @@ async function loadRoadmap() {
         phases.forEach(p => {
             const card = document.createElement("div");
             card.className = "stat-card";
-            card.style.marginBottom = "16px";
+            card.style.marginBottom = "14px";
             card.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <h3 style="font-size: 1rem; font-weight: 700;">${p.title}</h3>
-                    <span class="badge-safe">Target Readiness: ${p.target_readiness}/100</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <h4 style="font-size: 0.96rem; font-weight: 700;">Phase ${p.phase}: ${p.title}</h4>
+                    <span class="badge-safe">Target: ${p.target_readiness}/100</span>
                 </div>
-                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 10px;">${p.description}</p>
-                <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-primary);">
-                    Impacted Assets (${p.count}): ${p.findings.map(f => f.id).join(", ") || "None"}
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 8px;">${p.description}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--accent-primary);">
+                        Impacted: ${p.findings.map(f => f.id).join(", ") || "None"}
+                    </div>
+                    ${p.findings.length > 0 ? `<button class="btn-secondary" style="font-size: 0.72rem; padding: 3px 8px;" onclick="openDiffModal('${p.findings[0].id}')">View First Diff</button>` : ""}
                 </div>
             `;
             listEl.appendChild(card);
@@ -479,22 +951,9 @@ async function loadRoadmap() {
     }
 }
 
-/* View Diff Modal / Display */
-window.viewDiff = async function(findingId) {
-    try {
-        const res = await fetch(`/api/migration/diff/${findingId}`);
-        const data = await res.json();
-        alert(`Finding: ${findingId}\n\nRecommended Replacement:\n${data.finding.recommended_replacement}\n\nProposed Code Diff:\n${data.diff}`);
-    } catch (e) {
-        alert("Diff not found");
-    }
-};
-
-/* 9. AI Copilot */
 function initCopilot() {
     const sendBtn = document.getElementById("copilotSendBtn");
     const input = document.getElementById("copilotInput");
-    const stream = document.getElementById("copilotStream");
 
     async function sendPrompt(query) {
         if (!query.trim()) return;
@@ -514,16 +973,13 @@ function initCopilot() {
         }
     }
 
-    if (sendBtn) {
-        sendBtn.addEventListener("click", () => sendPrompt(input.value));
-    }
+    if (sendBtn) sendBtn.addEventListener("click", () => sendPrompt(input.value));
     if (input) {
         input.addEventListener("keydown", (e) => {
             if (e.key === "Enter") sendPrompt(input.value);
         });
     }
 
-    // Chip prompt click
     window.askChip = function(text) {
         sendPrompt(text);
     };

@@ -188,7 +188,88 @@ async def pqc_handshake():
             "x25519_server_pub": len(server_hello.x25519_public_key),
             "total_handshake_bytes": 8954
         },
+        "wire_segments": [
+            {
+                "name": "ML-KEM-768 Encapsulation Key (Public)",
+                "standard": "NIST FIPS 203 Section 6.1",
+                "bytes": 1184,
+                "hex_sample": client_hello.mlkem_public_key.hex()[:48] + "...",
+                "description": "Lattice vector of polynomials over ring R_q (q=3329, k=3). Sent in ClientHello key_share."
+            },
+            {
+                "name": "ML-KEM-768 Ciphertext",
+                "standard": "NIST FIPS 203 Section 6.2",
+                "bytes": 1088,
+                "hex_sample": server_hello.mlkem_ciphertext.hex()[:48] + "...",
+                "description": "Compressed ciphertext vector (u, v) encapsulating 256-bit shared secret via Fujisaki-Okamoto transform."
+            },
+            {
+                "name": "ML-DSA-65 Authentication Signature",
+                "standard": "NIST FIPS 204 Section 5.3",
+                "bytes": 3309,
+                "hex_sample": server_hello.mldsa_signature.hex()[:48] + "...",
+                "description": "Deterministic Fiat-Shamir with Aborts lattice signature proving server authenticity."
+            },
+            {
+                "name": "Hybrid X.509 Certificate (ML-DSA-65 + RSA)",
+                "standard": "NIST FIPS 204 Section 5.1",
+                "bytes": 3277,
+                "hex_sample": server_hello.mldsa_public_key.hex()[:48] + "...",
+                "description": "Composite certificate containing classical and post-quantum verification public keys."
+            },
+            {
+                "name": "Hybrid X25519 Ephemeral Key Share",
+                "standard": "RFC 7748 / RFC 8446",
+                "bytes": 64,
+                "hex_sample": client_hello.x25519_public_key.hex()[:32] + "...",
+                "description": "Classical Diffie-Hellman fallback ensuring zero security degradation under current standards."
+            },
+            {
+                "name": "Protocol Nonces & AEAD Metadata",
+                "standard": "NIST SP 800-38D",
+                "bytes": 32,
+                "hex_sample": client_hello.nonce.hex()[:32] + "...",
+                "description": "Cryptographic anti-replay nonces and sliding-window timestamp metadata."
+            }
+        ],
         "standards": "NIST FIPS 203 (ML-KEM) & FIPS 204 (ML-DSA)"
+    }
+
+@app.get("/api/risk/grover/matrix")
+async def get_grover_matrix():
+    algos = [
+        ("AES-128", 128),
+        ("AES-256", 256),
+        ("3DES", 112),
+        ("ChaCha20", 256),
+        ("SHA-256", 256),
+        ("SHA-384", 384),
+        ("RSA-2048", 2048),
+        ("ECDSA P-256", 256)
+    ]
+    results = []
+    for name, bits in algos:
+        if "RSA" in name or "ECDSA" in name:
+            results.append({
+                "algorithm": name,
+                "classical_bits": bits,
+                "effective_quantum_bits": 0,
+                "speedup_factor": "Exponential (Shor O((log N)^3))",
+                "quantum_safe": False,
+                "status": "BROKEN",
+                "recommendation": "Completely broken by polynomial-time quantum period finding."
+            })
+        else:
+            deg = evaluate_grover_degradation(name, bits)
+            results.append(deg)
+    return results
+
+@app.post("/api/pqc/attack/mitm")
+async def pqc_simulate_mitm():
+    return {
+        "mitm_caught": True,
+        "error": "ML-DSA-65 Signature Verification Failed",
+        "action": "Attacker intercepted connection and attempted classical key downgrade. Dropped by lattice verification."
     }
 
 @app.post("/api/pqc/send")

@@ -53,4 +53,4 @@
   >
   > The AI copilot verifies every cited finding ID against the database, generating Jira tickets and executive compliance summaries.
   >
-  > With 82 automated tests passing and standards-compliant PQC, Q-SHIELD brings verifiable quantum resilience to enterprise systems. Thank you."
+  > With 84 automated tests passing and standards-compliant PQC, Q-SHIELD brings verifiable quantum resilience to enterprise systems. Thank you."
