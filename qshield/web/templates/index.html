@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="slate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-SHIELD — End-to-End Quantum Security Platform</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Ambient Animated Wave Header -->
+    <header class="ambient-header">
+        <canvas id="waveCanvas" class="wave-canvas"></canvas>
+        <div class="header-inner">
+            <div class="logo-block">
+                <div class="logo-icon">⚛️</div>
+                <div class="logo-text">
+                    <h1>Q-SHIELD <span class="badge-tag">FIPS 203/204</span></h1>
+                    <p>End-to-End Quantum Security & Crypto-Agility Platform</p>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <div class="readiness-chip">
+                    <span class="meter-dot"></span>
+                    <span>Readiness: <strong id="headerScoreVal">33.0/100</strong></span>
+                </div>
+                <button id="themeToggleBtn" class="theme-btn" title="Toggle Creme / Slate Palette">
+                    <span>🌓</span>
+                    <span id="themeLabel">Theme: Slate</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Pills Bar -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <button class="nav-pill active" data-tab="overview">📊 Overview</button>
+            <button class="nav-pill" data-tab="cbom">📦 CBOM Inventory</button>
+            <button class="nav-pill" data-tab="quantum">⚛️ Quantum Simulator</button>
+            <button class="nav-pill" data-tab="mosca">⏳ HNDL Risk Analyzer</button>
+            <button class="nav-pill" data-tab="gateway">🛡️ PQC Gateway & Live Chat</button>
+            <button class="nav-pill" data-tab="roadmap">🗺️ Migration Roadmap</button>
+            <button class="nav-pill" data-tab="copilot">🤖 AI Copilot & Exports</button>
+        </div>
+    </nav>
+
+    <!-- Main Canvas -->
+    <main class="main-canvas">
+
+        <!-- Welcome Hero Screen -->
+        <section id="welcomeHero" class="welcome-hero">
+            <h2 class="hero-title">Prepare Enterprise Cryptography for Q-Day</h2>
+            <p class="hero-subtitle">
+                Discover vulnerable algorithms across polyglot repositories, simulate Shor's period-finding attack, 
+                deploy a hybrid ML-KEM-768 quantum-safe channel, and automate code migration without breaking production.
+            </p>
+            <div class="hero-actions">
+                <button id="heroScanBtn" class="btn-primary">
+                    <span>⚡ Run First Scan on QuantumBank</span>
+                </button>
+                <label class="btn-secondary" style="cursor: pointer;">
+                    <span>📂 Upload Custom Repository ZIP</span>
+                    <input type="file" id="zipUploadInput" accept=".zip" style="display: none;">
+                </label>
+            </div>
+
+            <div id="scanProgress" class="scan-progress">
+                <div id="scanStatusText" style="font-size: 0.85rem; font-weight: 600;">Initializing Scanner...</div>
+                <div class="progress-bar-wrap">
+                    <div id="progressBarFill" class="progress-bar-fill"></div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">
+                    AST Traversal • Comment Stripper • FIPS 203 Verification
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Content (Revealed after scan) -->
+        <div id="dashboardContent">
+
+            <!-- TAB 1: OVERVIEW -->
+            <div id="tab-overview" class="tab-pane active">
+                <div class="overview-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Target System</div>
+                        <div id="statTargetName" class="stat-val" style="font-size: 1.4rem;">QuantumBank</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Crypto Assets</div>
+                        <div id="statTotalAssets" class="stat-val">27</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Quantum Vulnerable</div>
+                        <div id="statVulnAssets" class="stat-val" style="color: var(--status-danger);">24</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Quantum Readiness</div>
+                        <div id="statReadinessScore" class="stat-val" style="color: var(--status-warn);">33.0/100</div>
+                    </div>
+                </div>
+
+                <!-- Mosca Threat Banner -->
+                <div class="mosca-banner">
+                    <div>
+                        <div style="font-size: 0.82rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">
+                            Mosca's Inequality Assessment (HNDL Threat)
+                        </div>
+                        <div class="mosca-formula" style="margin: 6px 0;">X (10.0y) + Y (2.3y) > Z (12.0y)</div>
+                        <p style="font-size: 0.86rem; color: var(--text-secondary);">
+                            Historical financial records outlive their encryption. Active adversary interception exposes records today.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="badge-broken" style="font-size: 0.95rem; padding: 8px 14px;">CRITICAL HNDL EXPOSURE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: CBOM INVENTORY -->
+            <div id="tab-cbom" class="tab-pane">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h2 style="font-size: 1.25rem; font-weight: 700;">Cryptographic Bill of Materials (CBOM)</h2>
+                    <input type="text" id="cbomSearchInput" placeholder="Filter by algorithm, file, or type..." style="width: 320px;">
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Algorithm</th>
+                                <th>Asset Type</th>
+                                <th>Location</th>
+                                <th>Quantum Risk</th>
+                                <th>Remediation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cbomTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 3: QUANTUM SIMULATOR -->
+            <div id="tab-quantum" class="tab-pane">
+                <div class="split-grid">
+                    <div class="panel-card">
+                        <div class="panel-title">
+                            <span>Shor's Period-Finding Simulator</span>
+                            <span class="badge-tag">Exact Statevector</span>
+                        </div>
+                        <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 16px;">
+                            Simulates quantum superposition, modular exponentiation $f(x) = a^x \bmod N$, and Inverse QFT peak interference.
+                        </p>
+
+                        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                            <select id="shorModulusSelect" style="flex: 1;">
+                                <option value="15">N = 15 (3 × 5, a=7, Q/r = 64)</option>
+                                <option value="21">N = 21 (3 × 7, a=2)</option>
+                                <option value="143" selected>N = 143 (11 × 13, Pedagogic RSA)</option>
+                                <option value="221">N = 221 (13 × 17)</option>
+                                <option value="247">N = 247 (13 × 19)</option>
+                            </select>
+                            <button id="runShorBtn" class="btn-primary">Run Shor Period-Finding</button>
+                        </div>
+
+                        <div id="shorOutputText" style="font-family: var(--font-mono); font-size: 0.82rem; background: var(--bg-base); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); line-height: 1.6;">
+                            Click to execute simulation.
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <div class="panel-title">
+                            <span>Quantum Fourier Interference Peaks</span>
+                            <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">P(s) = |⟨s|ψ⟩|²</span>
+                        </div>
+                        <div id="shorSvgWrap" style="margin-top: 8px;">
+                            <!-- SVG Rendered Here -->
+                        </div>
+                        <div style="margin-top: 16px; font-size: 0.8rem; color: var(--text-secondary);">
+                            Constructive interference occurs at multiples of $s \approx j \cdot \frac{Q}{r}$. Continued fractions extracts the order $r$.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: HNDL RISK ANALYZER -->
+            <div id="tab-mosca" class="tab-pane">
+                <div class="panel-card" style="max-width: 800px; margin: 0 auto;">
+                    <div class="panel-title">
+                        <span>Mosca's Inequality Simulator</span>
+                        <span id="moscaExposureBadge" class="badge-broken">HIGH</span>
+                    </div>
+                    <div id="moscaHorizonText" style="font-family: var(--font-mono); font-size: 0.92rem; color: var(--accent-primary); margin-bottom: 8px;">
+                        Horizon: X + Y = 12.3y vs Q-Day (Z) = 12.0y
+                    </div>
+                    <p id="moscaVerdictText" style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 24px;">
+                        Evaluating exposure parameters...
+                    </p>
+
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">
+                                <span>Data Shelf-Life (X): Confidentiality Requirement</span>
+                                <span id="valX" style="color: var(--accent-primary);">10y</span>
+                            </div>
+                            <input type="range" id="sliderX" min="1" max="40" step="0.5" value="10" style="width: 100%;">
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">
+                                <span>Migration Window (Y): Time to Refactor & Deploy PQC</span>
+                                <span id="valY" style="color: var(--accent-primary);">2.3y</span>
+                            </div>
+                            <input type="range" id="sliderY" min="0.5" max="10" step="0.1" value="2.3" style="width: 100%;">
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">
+                                <span>Time to Q-Day (Z): Arrival of Fault-Tolerant Quantum Computer</span>
+                                <span id="valZ" style="color: var(--accent-primary);">12y</span>
+                            </div>
+                            <input type="range" id="sliderZ" min="3" max="25" step="0.5" value="12" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: PQC GATEWAY -->
+            <div id="tab-gateway" class="tab-pane">
+                <div class="split-grid">
+                    <div class="panel-card">
+                        <div class="panel-title">
+                            <span>Hybrid Quantum-Safe Channel</span>
+                            <span class="badge-safe">ML-KEM-768 + ML-DSA-65</span>
+                        </div>
+                        <div style="font-size: 0.82rem; font-family: var(--font-mono); margin-bottom: 12px; color: var(--text-secondary);">
+                            Wire Handshake: 8,954 Bytes | Symmetric Session: AES-256-GCM
+                        </div>
+                        <div id="pqcChatStream" class="chat-stream">
+                            <div class="chat-msg agent">
+                                🛡️ Q-SHIELD Hybrid Gateway established. Post-quantum cryptographic session active.
+                            </div>
+                        </div>
+                        <div class="chat-input-row">
+                            <input type="text" id="pqcMsgInput" placeholder="Enter sensitive transaction payload..." style="flex: 1;">
+                            <button id="pqcSendBtn" class="btn-primary" style="padding: 10px 16px;">Send</button>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <div class="panel-title">
+                            <span>Adversary Attack Playground</span>
+                            <span class="badge-tag">Active Defense</span>
+                        </div>
+                        <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 20px;">
+                            Test real-time defenses against cryptographic tampering and packet replay attacks.
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <button id="pqcTamperBtn" class="btn-secondary" style="border-color: var(--status-danger); color: var(--status-danger);">
+                                ⚡ Inject Bit-Flip Ciphertext Tamper (Test MAC Rejection)
+                            </button>
+                            <button id="pqcReplayBtn" class="btn-secondary" style="border-color: var(--status-warn); color: var(--status-warn);">
+                                🔄 Simulate Replay Attack (Test Nonce Window)
+                            </button>
+                        </div>
+                        <div style="margin-top: 24px; font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+                            <strong>Defense Guarantee:</strong> Even if an adversary records the ciphertext or alters a single bit in transit, 
+                            the packet is rejected instantly by AES-256-GCM authentication and ML-DSA-65 lattice signatures.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: MIGRATION ROADMAP -->
+            <div id="tab-roadmap" class="tab-pane">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 1.25rem; font-weight: 700;">4-Phase Crypto-Agility Migration Roadmap</h2>
+                    <span class="badge-tag">Readiness: 33 → 42 → 55 → 84 → 96</span>
+                </div>
+                <div id="roadmapPhaseList">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- TAB 7: AI COPILOT & EXPORTS -->
+            <div id="tab-copilot" class="tab-pane">
+                <div class="split-grid">
+                    <div class="panel-card">
+                        <div class="panel-title">
+                            <span>Grounded AI Security Copilot</span>
+                            <span class="badge-safe">Zero Hallucination</span>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                            <button class="btn-secondary" style="font-size: 0.74rem; padding: 4px 10px;" onclick="askChip('What should we migrate first?')">What should we migrate first?</button>
+                            <button class="btn-secondary" style="font-size: 0.74rem; padding: 4px 10px;" onclick="askChip('Explain RSA vulnerability in payment-api')">Explain RSA in payment-api</button>
+                            <button class="btn-secondary" style="font-size: 0.74rem; padding: 4px 10px;" onclick="askChip('How does Mosca inequality apply to QuantumBank?')">Mosca Inequality summary</button>
+                        </div>
+                        <div id="copilotStream" class="chat-stream">
+                            <div class="chat-msg agent">
+                                👋 Hello! I am Q-SHIELD's grounded copilot. I analyze the 27 assets in your CBOM and ensure all recommendations cite valid finding IDs. What would you like to explore?
+                            </div>
+                        </div>
+                        <div class="chat-input-row">
+                            <input type="text" id="copilotInput" placeholder="Ask a question about your crypto inventory or remediation..." style="flex: 1;">
+                            <button id="copilotSendBtn" class="btn-primary" style="padding: 10px 16px;">Ask</button>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <div class="panel-title">
+                            <span>Export Artifacts & Developer Tickets</span>
+                            <span class="badge-tag">Compliance & CI</span>
+                        </div>
+                        <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 20px;">
+                            Download standardized reports and export machine-readable Cryptographic Bills of Materials.
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <a href="/api/export/cyclonedx" download class="btn-primary" style="text-decoration: none; justify-content: center;">
+                                📥 Export CycloneDX 1.6 CBOM (JSON)
+                            </a>
+                            <a href="/api/export/report" download class="btn-secondary" style="text-decoration: none; text-align: center;">
+                                📄 Download Executive Risk Report (Markdown)
+                            </a>
+                        </div>
+                        <div style="margin-top: 24px; padding: 14px; background: var(--bg-base); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.8rem;">
+                            <strong>CI/CD Gate Integration:</strong> CycloneDX 1.6 CBOM can be ingested directly into SonarQube, Dependency-Track, and enterprise SBOM tools for automated compliance auditing.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

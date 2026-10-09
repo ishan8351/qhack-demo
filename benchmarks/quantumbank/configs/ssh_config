@@ -1,0 +1,12 @@
+# QuantumBank Bastion and Core SSH Configuration
+# NOTE TRAP: Legacy algorithms like ssh-dss were disabled in 2018.
+
+Host *.internal.quantumbank.com
+    User deployer
+    Port 2222
+    # Asset 22: HostKeyAlgorithms with legacy RSA
+    HostKeyAlgorithms +ssh-rsa,rsa-sha2-512
+    # Asset 23: Classical Diffie-Hellman & ECDH key exchange
+    KexAlgorithms diffie-hellman-group14-sha256,ecdh-sha2-nistp256
+    # Comment trap:
+    # HostKeyAlgorithms ssh-ed25519
