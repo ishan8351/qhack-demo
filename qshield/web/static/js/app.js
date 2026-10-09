@@ -1,4 +1,4 @@
-// Q-SHIELD Presentation Console Application Controller
+// Q-SHIELD Presentation Console Application Controller (High Energy & Animated)
 document.addEventListener("DOMContentLoaded", () => {
     initAmbientHeader();
     initTheme();
@@ -17,7 +17,7 @@ let currentCBOM = null;
 let currentStep = 1;
 
 /* ========================================================================== */
-/* 1. Ambient Wave Header Canvas (Continuous Quantum Wave)                   */
+/* 1. Ambient Wave Header with Floating Quantum Particles & Mouse Ripple      */
 /* ========================================================================== */
 function initAmbientHeader() {
     const canvas = document.getElementById("waveCanvas");
@@ -32,37 +32,99 @@ function initAmbientHeader() {
         height = canvas.height = canvas.parentElement.offsetHeight;
     });
 
+    // Interactive mouse displacement
+    let mouseX = -1000;
+    let mouseY = -1000;
+    canvas.parentElement.addEventListener("mousemove", (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+    });
+    canvas.parentElement.addEventListener("mouseleave", () => {
+        mouseX = -1000;
+        mouseY = -1000;
+    });
+
+    // Floating quantum probability particles
+    const particles = [];
+    for (let p = 0; p < 28; p++) {
+        particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: (Math.random() - 0.5) * 0.4,
+            radius: Math.random() * 2.2 + 1,
+            color: p % 3 === 0 ? "rgba(0, 240, 255, 0.45)" : p % 3 === 1 ? "rgba(168, 85, 247, 0.45)" : "rgba(16, 185, 129, 0.4)",
+            pulse: Math.random() * Math.PI
+        });
+    }
+
     let phase = 0;
     function renderWave() {
         ctx.clearRect(0, 0, width, height);
 
         const isCreme = document.documentElement.getAttribute("data-theme") === "creme";
-        const waveColor = isCreme ? "rgba(2, 132, 199, 0.16)" : "rgba(56, 189, 248, 0.18)";
-        const waveColor2 = isCreme ? "rgba(5, 150, 105, 0.09)" : "rgba(16, 185, 129, 0.12)";
+        const cyanColor = isCreme ? "rgba(2, 132, 199, 0.22)" : "rgba(0, 240, 255, 0.28)";
+        const purpleColor = isCreme ? "rgba(124, 58, 237, 0.16)" : "rgba(168, 85, 247, 0.22)";
+        const greenColor = isCreme ? "rgba(5, 150, 105, 0.14)" : "rgba(16, 185, 129, 0.18)";
 
-        // First gentle quantum probability wave
+        // 1. Primary Quantum Wave (Cyan)
         ctx.beginPath();
         ctx.moveTo(0, height / 2);
         for (let x = 0; x < width; x += 4) {
-            const y = Math.sin(x * 0.005 + phase) * 14 + Math.cos(x * 0.002 + phase * 0.5) * 8 + height / 2;
+            let dy = 0;
+            const dist = Math.abs(x - mouseX);
+            if (dist < 140) {
+                dy = Math.sin((dist / 140) * Math.PI) * 16;
+            }
+            const y = Math.sin(x * 0.005 + phase) * 14 + Math.cos(x * 0.002 + phase * 0.5) * 8 + dy + height / 2;
             ctx.lineTo(x, y);
         }
-        ctx.strokeStyle = waveColor;
+        ctx.strokeStyle = cyanColor;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // 2. Secondary Harmonic Wave (Violet / Purple)
+        ctx.beginPath();
+        ctx.moveTo(0, height / 2);
+        for (let x = 0; x < width; x += 4) {
+            const y = Math.sin(x * 0.008 - phase * 0.7) * 11 + Math.sin(x * 0.003 + phase) * 7 + height / 2;
+            ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = purpleColor;
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Secondary subtle interference wave
+        // 3. Subtle Base Resonance Wave (Emerald)
         ctx.beginPath();
         ctx.moveTo(0, height / 2);
         for (let x = 0; x < width; x += 4) {
-            const y = Math.sin(x * 0.008 - phase * 0.7) * 10 + Math.sin(x * 0.003 + phase) * 6 + height / 2;
+            const y = Math.cos(x * 0.004 + phase * 0.4) * 9 + height / 2;
             ctx.lineTo(x, y);
         }
-        ctx.strokeStyle = waveColor2;
+        ctx.strokeStyle = greenColor;
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        phase += 0.008;
+        // 4. Update and Render Floating Particles
+        particles.forEach(pt => {
+            pt.x += pt.vx;
+            pt.y += pt.vy;
+            pt.pulse += 0.03;
+
+            if (pt.x < 0) pt.x = width;
+            if (pt.x > width) pt.x = 0;
+            if (pt.y < 0) pt.y = height;
+            if (pt.y > height) pt.y = 0;
+
+            const currentR = pt.radius + Math.sin(pt.pulse) * 0.6;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, Math.max(currentR, 0.8), 0, Math.PI * 2);
+            ctx.fillStyle = pt.color;
+            ctx.fill();
+        });
+
+        phase += 0.01;
         requestAnimationFrame(renderWave);
     }
     renderWave();
@@ -272,11 +334,11 @@ function renderCBOMTable(findings) {
     findings.forEach(f => {
         const tr = document.createElement("tr");
 
-        let riskBadge = `<span class="badge-broken">Shor Broken</span>`;
+        let riskBadge = `<span class="badge-broken glow-red">Shor Broken</span>`;
         if (f.quantum_risk === "WEAKENED_BY_GROVER") {
             riskBadge = `<span class="badge-weakened">Grover Weakened</span>`;
         } else if (f.quantum_risk === "QUANTUM_RESILIENT") {
-            riskBadge = `<span class="badge-safe">Quantum Resilient</span>`;
+            riskBadge = `<span class="badge-safe glow-green">Quantum Resilient</span>`;
         }
 
         tr.innerHTML = `
@@ -415,7 +477,7 @@ function initMoscaSliders() {
 
         if (badge) {
             badge.textContent = data.exposure_level;
-            badge.className = data.is_at_risk ? "badge-broken" : "badge-safe";
+            badge.className = data.is_at_risk ? "badge-broken glow-red" : "badge-safe glow-green";
         }
         if (horizonText) {
             horizonText.textContent = `Horizon: X (${X.toFixed(1)}y) + Y (${Y.toFixed(1)}y) = ${data.total_risk_horizon}y vs Q-Day (${Z.toFixed(1)}y)`;
@@ -444,7 +506,7 @@ function initMoscaSliders() {
 }
 
 /* ========================================================================== */
-/* 7. Step 03: The Full Quantum Threat Suite                                  */
+/* 7. Step 03: The Full Quantum Threat Suite (Visual Magnanimity)            */
 /* ========================================================================== */
 let circuitStage = 1;
 let circuitPlayInterval = null;
@@ -498,7 +560,6 @@ window.switchQuantumSub = function(subId) {
     const target = document.getElementById(`qsub-${subId}`);
     if (target) target.style.display = "block";
 
-    // Update active subnav pill
     const pills = document.querySelectorAll("#pane-step-3 .subnav-pill");
     pills.forEach(p => p.classList.remove("active"));
     event.target.classList.add("active");
@@ -521,26 +582,27 @@ function renderShorResults(data) {
         `;
     }
 
-    // Render SVG Probability Peaks
+    // Render SVG Probability Peaks with Vibrant Cyberpunk Gradients
     if (svgWrap && sim.sampled_peaks) {
         const svgW = 560;
         const svgH = 180;
         const maxState = sim.register_size_Q;
 
-        let bars = sim.sampled_peaks.map(p => {
+        let bars = sim.sampled_peaks.map((p, idx) => {
             const x = (p.state / maxState) * (svgW - 80) + 40;
             const barH = p.prob * 480;
             const y = svgH - 30 - barH;
+            const color = idx % 2 === 0 ? "#00F0FF" : "#A855F7";
             return `
-                <line x1="${x}" y1="${svgH - 30}" x2="${x}" y2="${y}" stroke="var(--accent-primary)" stroke-width="4" stroke-linecap="round"/>
-                <circle cx="${x}" cy="${y}" r="4" fill="var(--accent-primary)"/>
-                <text x="${x}" y="${svgH - 12}" font-size="10" fill="var(--text-secondary)" text-anchor="middle" font-family="monospace">${p.state}</text>
+                <line x1="${x}" y1="${svgH - 30}" x2="${x}" y2="${y}" stroke="${color}" stroke-width="5" stroke-linecap="round" filter="drop-shadow(0 0 6px ${color})"/>
+                <circle cx="${x}" cy="${y}" r="5" fill="${color}" filter="drop-shadow(0 0 8px ${color})"/>
+                <text x="${x}" y="${svgH - 12}" font-size="11" fill="var(--text-secondary)" text-anchor="middle" font-family="monospace" font-weight="bold">${p.state}</text>
             `;
         }).join("");
 
         svgWrap.innerHTML = `
             <svg width="100%" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" style="background: var(--bg-base); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-                <line x1="30" y1="${svgH - 30}" x2="${svgW - 20}" y2="${svgH - 30}" stroke="var(--border-strong)" stroke-width="1"/>
+                <line x1="30" y1="${svgH - 30}" x2="${svgW - 20}" y2="${svgH - 30}" stroke="var(--border-strong)" stroke-width="1.5"/>
                 ${bars}
                 <text x="15" y="${svgH / 2}" font-size="11" fill="var(--text-muted)" transform="rotate(-90 15,${svgH/2})" text-anchor="middle">|ψ|²</text>
             </svg>
@@ -548,7 +610,7 @@ function renderShorResults(data) {
     }
 }
 
-// 3B: Multi-Qubit Circuit Visualizer
+// 3B: Multi-Qubit Circuit Visualizer with Animated Photon Beads
 window.stepCircuitStage = function(delta) {
     circuitStage = Math.max(1, Math.min(4, circuitStage + delta));
     renderCircuitStage(circuitStage);
@@ -562,7 +624,7 @@ window.toggleCircuitPlay = function() {
         circuitPlayInterval = setInterval(() => {
             circuitStage = (circuitStage % 4) + 1;
             renderCircuitStage(circuitStage);
-        }, 1500);
+        }, 1600);
     }
 };
 
@@ -583,45 +645,45 @@ function renderCircuitStage(stage) {
         const svgW = 740;
         const svgH = 160;
         
-        // Highlight active gate by stage
-        const hGlow = stage === 1 ? 'stroke="var(--accent-primary)" stroke-width="3" filter="drop-shadow(0 0 6px var(--accent-primary))"' : 'stroke="var(--border-strong)"';
-        const uGlow = stage === 2 ? 'stroke="var(--accent-primary)" stroke-width="3" filter="drop-shadow(0 0 6px var(--accent-primary))"' : 'stroke="var(--border-strong)"';
-        const iqftGlow = stage === 3 ? 'stroke="var(--accent-primary)" stroke-width="3" filter="drop-shadow(0 0 6px var(--accent-primary))"' : 'stroke="var(--border-strong)"';
-        const mGlow = stage === 4 ? 'stroke="var(--status-safe)" stroke-width="3" filter="drop-shadow(0 0 6px var(--status-safe))"' : 'stroke="var(--border-strong)"';
+        // Highlight active gate with high-voltage neon glow
+        const hGlow = stage === 1 ? 'stroke="#00F0FF" stroke-width="3" fill="rgba(0, 240, 255, 0.2)" filter="drop-shadow(0 0 10px #00F0FF)"' : 'stroke="var(--border-strong)" fill="var(--bg-surface-elevated)"';
+        const uGlow = stage === 2 ? 'stroke="#A855F7" stroke-width="3" fill="rgba(168, 85, 247, 0.2)" filter="drop-shadow(0 0 10px #A855F7)"' : 'stroke="var(--border-strong)" fill="var(--bg-surface-elevated)"';
+        const iqftGlow = stage === 3 ? 'stroke="#38BDF8" stroke-width="3" fill="rgba(56, 189, 248, 0.2)" filter="drop-shadow(0 0 10px #38BDF8)"' : 'stroke="var(--border-strong)" fill="var(--bg-surface-elevated)"';
+        const mGlow = stage === 4 ? 'stroke="#10B981" stroke-width="3" fill="rgba(16, 185, 129, 0.2)" filter="drop-shadow(0 0 10px #10B981)"' : 'stroke="var(--border-strong)" fill="var(--bg-surface-elevated)"';
 
         svgWrap.innerHTML = `
             <svg width="100%" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" style="background: var(--bg-base); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-                <!-- Qubit Wires -->
-                <line x1="50" y1="40" x2="690" y2="40" stroke="var(--border-subtle)" stroke-width="2"/>
-                <line x1="50" y1="75" x2="690" y2="75" stroke="var(--border-subtle)" stroke-width="2"/>
-                <line x1="50" y1="120" x2="690" y2="120" stroke="var(--border-subtle)" stroke-width="2"/>
+                <!-- Qubit Wires with Neon Glow -->
+                <line x1="50" y1="40" x2="690" y2="40" stroke="#33415C" stroke-width="2"/>
+                <line x1="50" y1="75" x2="690" y2="75" stroke="#33415C" stroke-width="2"/>
+                <line x1="50" y1="120" x2="690" y2="120" stroke="#33415C" stroke-width="2"/>
 
                 <!-- Qubit Labels -->
-                <text x="20" y="44" fill="var(--text-secondary)" font-size="12" font-family="monospace">|0⟩</text>
-                <text x="20" y="79" fill="var(--text-secondary)" font-size="12" font-family="monospace">|0⟩</text>
-                <text x="20" y="124" fill="var(--text-secondary)" font-size="12" font-family="monospace">|1⟩</text>
+                <text x="20" y="44" fill="#00F0FF" font-size="12" font-family="monospace" font-weight="bold">|q₀⟩</text>
+                <text x="20" y="79" fill="#00F0FF" font-size="12" font-family="monospace" font-weight="bold">|q₁⟩</text>
+                <text x="20" y="124" fill="#A855F7" font-size="12" font-family="monospace" font-weight="bold">|y⟩</text>
 
                 <!-- Stage 1: Hadamard Gates -->
-                <rect x="90" y="24" width="36" height="32" rx="4" fill="var(--bg-surface-elevated)" ${hGlow}/>
-                <text x="108" y="45" fill="var(--text-primary)" font-size="13" font-weight="bold" text-anchor="middle">H</text>
-                <rect x="90" y="59" width="36" height="32" rx="4" fill="var(--bg-surface-elevated)" ${hGlow}/>
-                <text x="108" y="80" fill="var(--text-primary)" font-size="13" font-weight="bold" text-anchor="middle">H</text>
+                <rect x="90" y="24" width="36" height="32" rx="5" ${hGlow}/>
+                <text x="108" y="45" fill="#F8FAFC" font-size="13" font-weight="bold" text-anchor="middle">H</text>
+                <rect x="90" y="59" width="36" height="32" rx="5" ${hGlow}/>
+                <text x="108" y="80" fill="#F8FAFC" font-size="13" font-weight="bold" text-anchor="middle">H</text>
 
-                <!-- Stage 2: Modular Exponentiation Box -->
-                <rect x="200" y="20" width="130" height="115" rx="6" fill="var(--bg-surface-elevated)" ${uGlow}/>
-                <text x="265" y="75" fill="var(--text-primary)" font-size="13" font-weight="bold" text-anchor="middle">U_a (mod N)</text>
+                <!-- Stage 2: Modular Exponentiation Oracle -->
+                <rect x="200" y="18" width="135" height="118" rx="8" ${uGlow}/>
+                <text x="267" y="75" fill="#F8FAFC" font-size="13" font-weight="bold" text-anchor="middle">U_a (mod N)</text>
 
                 <!-- Stage 3: IQFT Box -->
-                <rect x="390" y="20" width="120" height="75" rx="6" fill="var(--bg-surface-elevated)" ${iqftGlow}/>
-                <text x="450" y="62" fill="var(--text-primary)" font-size="13" font-weight="bold" text-anchor="middle">IQFT †</text>
+                <rect x="390" y="20" width="125" height="75" rx="8" ${iqftGlow}/>
+                <text x="452" y="62" fill="#F8FAFC" font-size="13" font-weight="bold" text-anchor="middle">IQFT †</text>
 
                 <!-- Stage 4: Measurement Detectors -->
-                <rect x="570" y="24" width="40" height="32" rx="4" fill="var(--bg-surface-elevated)" ${mGlow}/>
-                <text x="590" y="45" fill="var(--text-primary)" font-size="14" text-anchor="middle">∡</text>
-                <rect x="570" y="59" width="40" height="32" rx="4" fill="var(--bg-surface-elevated)" ${mGlow}/>
-                <text x="590" y="80" fill="var(--text-primary)" font-size="14" text-anchor="middle">∡</text>
+                <rect x="570" y="24" width="42" height="32" rx="5" ${mGlow}/>
+                <text x="591" y="45" fill="#F8FAFC" font-size="14" text-anchor="middle">∡</text>
+                <rect x="570" y="59" width="42" height="32" rx="5" ${mGlow}/>
+                <text x="591" y="80" fill="#F8FAFC" font-size="14" text-anchor="middle">∡</text>
 
-                <text x="640" y="62" fill="var(--accent-primary)" font-size="13" font-family="monospace">➔ r</text>
+                <text x="640" y="62" fill="#10B981" font-size="13" font-family="monospace" font-weight="bold">➔ r</text>
             </svg>
         `;
     }
@@ -714,8 +776,8 @@ function renderPhaseWheel(orderR) {
         const x = cx + r * Math.cos(theta);
         const y = cy + r * Math.sin(theta);
         vectors += `
-            <line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--accent-primary)" stroke-width="2.5" marker-end="url(#arrow)"/>
-            <circle cx="${x}" cy="${y}" r="4" fill="var(--accent-primary)"/>
+            <line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#A855F7" stroke-width="2.5" filter="drop-shadow(0 0 6px #A855F7)"/>
+            <circle cx="${x}" cy="${y}" r="4.5" fill="#00F0FF" filter="drop-shadow(0 0 6px #00F0FF)"/>
         `;
     }
 
@@ -752,6 +814,7 @@ function initPQCDiffenseSuite() {
     loadHandshakeSegments();
     initAttackPlayground();
     startCryptoLogStream();
+    startAmbientPacketDrift();
 }
 
 window.switchPqcSub = function(subId) {
@@ -786,44 +849,113 @@ window.inspectWireSegment = function(index) {
     document.getElementById("wireSegHex").textContent = seg.hex_sample;
 };
 
-// 4B: Attack Playground & MITM Harness
+// Ambient Packet Gliding on Wire
+function startAmbientPacketDrift() {
+    const packet = document.getElementById("topoPacket");
+    if (!packet) return;
+    let forward = true;
+    setInterval(() => {
+        if (!packet.classList.contains("attacking")) {
+            packet.style.left = forward ? "75%" : "25%";
+            forward = !forward;
+        }
+    }, 2800);
+}
+
+// 4B: Attack Playground & MITM Harness with Laser and Shield Animations
 function initAttackPlayground() {
     const tamperBtn = document.getElementById("pqcTamperBtn");
     const replayBtn = document.getElementById("pqcReplayBtn");
     const mitmBtn = document.getElementById("pqcMitmBtn");
     const packet = document.getElementById("topoPacket");
+    const laser = document.getElementById("mitmLaser");
+    const shield = document.getElementById("serverShieldRipple");
 
     if (tamperBtn) {
         tamperBtn.addEventListener("click", async () => {
-            animatePacket();
+            if (packet) {
+                packet.classList.add("attacking");
+                packet.style.left = "48%";
+                packet.textContent = "💥";
+            }
+            if (laser) {
+                laser.classList.add("firing");
+                setTimeout(() => laser.classList.remove("firing"), 500);
+            }
+
             const res = await fetch("/api/pqc/attack/tamper", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: "TAMPER PAYLOAD" })
             });
             const data = await res.json();
+
+            setTimeout(() => {
+                if (packet) packet.style.left = "78%";
+                if (shield) {
+                    shield.classList.add("active");
+                    setTimeout(() => shield.classList.remove("active"), 800);
+                }
+            }, 350);
+
+            setTimeout(() => {
+                if (packet) {
+                    packet.classList.remove("attacking");
+                    packet.textContent = "📦";
+                    packet.style.left = "20%";
+                }
+            }, 1200);
+
             showMitmBanner("danger", `🚨 [BIT-FLIP TAMPER INTERCEPTED] ${data.error}`, data.action);
         });
     }
 
     if (replayBtn) {
         replayBtn.addEventListener("click", async () => {
-            animatePacket();
+            if (packet) {
+                packet.classList.add("attacking");
+                packet.textContent = "🔄";
+                packet.style.left = "78%";
+            }
+
             const res = await fetch("/api/pqc/attack/replay", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: "REPLAY TRANSACTION" })
             });
             const data = await res.json();
+
+            setTimeout(() => {
+                if (packet) {
+                    packet.classList.remove("attacking");
+                    packet.textContent = "📦";
+                    packet.style.left = "20%";
+                }
+            }, 1000);
+
             showMitmBanner("warn", `🛑 [REPLAY ATTACK DISCARDED] ${data.error}`, data.action);
         });
     }
 
     if (mitmBtn) {
         mitmBtn.addEventListener("click", async () => {
-            animatePacket();
+            if (packet) {
+                packet.classList.add("attacking");
+                packet.textContent = "🔓";
+                packet.style.left = "48%";
+            }
+
             const res = await fetch("/api/pqc/attack/mitm", { method: "POST" });
             const data = await res.json();
+
+            setTimeout(() => {
+                if (packet) {
+                    packet.classList.remove("attacking");
+                    packet.textContent = "📦";
+                    packet.style.left = "20%";
+                }
+            }, 1000);
+
             showMitmBanner("danger", `🔒 [LATTICE SIGNATURE FORGERY BLOCKED] ${data.error}`, data.action);
         });
     }
@@ -846,18 +978,6 @@ function initAttackPlayground() {
             appendPqcChat("agent", `🛡️ [ML-KEM/AES-256-GCM Decrypted] Server: "${data.verified_decrypted}" (Ciphertext: ${data.ciphertext_hex})`);
         });
     }
-}
-
-function animatePacket() {
-    const packet = document.getElementById("topoPacket");
-    if (!packet) return;
-    packet.style.left = "48%";
-    setTimeout(() => {
-        packet.style.left = "80%";
-    }, 400);
-    setTimeout(() => {
-        packet.style.left = "20%";
-    }, 1200);
 }
 
 function showMitmBanner(type, title, desc) {
@@ -906,14 +1026,14 @@ function startCryptoLogStream() {
         if (i < logs.length) {
             const p = document.createElement("div");
             const time = new Date().toISOString().substring(11, 19);
-            p.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-tag">${logs[i]}</span>`;
+            p.innerHTML = `<span style="color: #64748B;">[${time}]</span> <span style="color: #00F0FF; font-weight: bold;">${logs[i]}</span>`;
             term.appendChild(p);
             term.scrollTop = term.scrollHeight;
             i++;
-            setTimeout(addLog, 450);
+            setTimeout(addLog, 480);
         }
     }
-    setTimeout(addLog, 800);
+    setTimeout(addLog, 700);
 }
 
 /* ========================================================================== */
@@ -934,11 +1054,11 @@ async function loadRoadmap() {
             card.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <h4 style="font-size: 0.96rem; font-weight: 700;">Phase ${p.phase}: ${p.title}</h4>
-                    <span class="badge-safe">Target: ${p.target_readiness}/100</span>
+                    <span class="badge-safe glow-green">Target: ${p.target_readiness}/100</span>
                 </div>
                 <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 8px;">${p.description}</p>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--accent-primary);">
+                    <div style="font-size: 0.74rem; font-family: var(--font-mono); color: #EAB308;">
                         Impacted: ${p.findings.map(f => f.id).join(", ") || "None"}
                     </div>
                     ${p.findings.length > 0 ? `<button class="btn-secondary" style="font-size: 0.72rem; padding: 3px 8px;" onclick="openDiffModal('${p.findings[0].id}')">View First Diff</button>` : ""}
@@ -960,6 +1080,14 @@ function initCopilot() {
         appendCopilot("user", query);
         input.value = "";
 
+        // Temporary thinking typing bubble
+        const stream = document.getElementById("copilotStream");
+        const thinkingBubble = document.createElement("div");
+        thinkingBubble.className = "chat-msg agent";
+        thinkingBubble.id = "copilotThinkingMsg";
+        thinkingBubble.innerHTML = `<em>⚡ Verifying finding IDs in active CBOM database...</em>`;
+        if (stream) stream.appendChild(thinkingBubble);
+
         try {
             const res = await fetch("/api/copilot/ask", {
                 method: "POST",
@@ -967,8 +1095,12 @@ function initCopilot() {
                 body: JSON.stringify({ query: query })
             });
             const data = await res.json();
+            const tb = document.getElementById("copilotThinkingMsg");
+            if (tb) tb.remove();
             appendCopilot("agent", data.answer);
         } catch (e) {
+            const tb = document.getElementById("copilotThinkingMsg");
+            if (tb) tb.remove();
             appendCopilot("agent", `Copilot error: ${e.message}`);
         }
     }

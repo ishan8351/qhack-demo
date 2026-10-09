@@ -8,6 +8,17 @@
 </head>
 <body>
 
+    <!-- Cyber Telemetry Ticker Bar -->
+    <div class="telemetry-ticker-bar">
+        <div class="ticker-inner">
+            <span class="ticker-item"><span class="beacon-pulse red"></span> <strong>THREAT STATE:</strong> DEFCON 2 (HNDL HARVEST ACTIVE)</span>
+            <span class="ticker-item"><span class="beacon-pulse blue"></span> <strong>STANDARDS:</strong> NIST FIPS 203 (ML-KEM) • FIPS 204 (ML-DSA)</span>
+            <span class="ticker-item"><span class="beacon-pulse green"></span> <strong>ACTIVE DEFENSE:</strong> HYBRID X25519MLKEM768 PROXY</span>
+            <span class="ticker-item"><span class="beacon-pulse purple"></span> <strong>BENCHMARK:</strong> QUANTUMBANK (27 ASSETS CATALOGED)</span>
+            <span class="ticker-item"><span class="beacon-pulse amber"></span> <strong>ESTIMATED Q-DAY:</strong> ~2038 (12.0y HORIZON)</span>
+        </div>
+    </div>
+
     <!-- Ambient Animated Wave Header -->
     <header class="ambient-header">
         <canvas id="waveCanvas" class="wave-canvas"></canvas>
@@ -21,6 +32,10 @@
             </div>
 
             <div class="header-controls">
+                <div class="threat-dial-badge" title="Harvest-Now-Decrypt-Later Threat Active">
+                    <span class="threat-dot red"></span>
+                    <span>DEFCON 2 // HNDL ALERT</span>
+                </div>
                 <div class="readiness-chip" title="Current Organizational Quantum Readiness Score">
                     <span class="meter-dot"></span>
                     <span>Readiness: <strong id="headerScoreVal">33.0/100</strong></span>
@@ -40,35 +55,35 @@
                 <div class="stepper-progress-fill" id="stepperProgressFill"></div>
             </div>
             <div class="stepper-steps">
-                <button class="step-btn active" data-step="1" data-tab="discover">
+                <button class="step-btn active step-1-btn" data-step="1" data-tab="discover">
                     <span class="step-num">01</span>
                     <span class="step-label">
                         <strong>Discover</strong>
                         <small>Assets & CBOM</small>
                     </span>
                 </button>
-                <button class="step-btn" data-step="2" data-tab="risk">
+                <button class="step-btn step-2-btn" data-step="2" data-tab="risk">
                     <span class="step-num">02</span>
                     <span class="step-label">
                         <strong>Quantify Risk</strong>
                         <small>Mosca & Grover</small>
                     </span>
                 </button>
-                <button class="step-btn" data-step="3" data-tab="threat">
+                <button class="step-btn step-3-btn" data-step="3" data-tab="threat">
                     <span class="step-num">03</span>
                     <span class="step-label">
                         <strong>Quantum Threat</strong>
                         <small>Shor & Circuits</small>
                     </span>
                 </button>
-                <button class="step-btn" data-step="4" data-tab="defense">
+                <button class="step-btn step-4-btn" data-step="4" data-tab="defense">
                     <span class="step-num">04</span>
                     <span class="step-label">
                         <strong>Active Defense</strong>
                         <small>Hybrid PQC</small>
                     </span>
                 </button>
-                <button class="step-btn" data-step="5" data-tab="migrate">
+                <button class="step-btn step-5-btn" data-step="5" data-tab="migrate">
                     <span class="step-num">05</span>
                     <span class="step-label">
                         <strong>Agile Migration</strong>
@@ -84,30 +99,34 @@
 
         <!-- Welcome Hero Screen -->
         <section id="welcomeHero" class="welcome-hero">
-            <div class="hero-badge">Q-HACK INDIA 2026 // LIVE ENTERPRISE DEMO</div>
-            <h2 class="hero-title">Prepare Enterprise Cryptography for Q-Day</h2>
-            <p class="hero-subtitle">
-                An end-to-end platform to discover quantum-vulnerable algorithms across polyglot repositories,
-                quantify Harvest-Now-Decrypt-Later exposure, simulate Shor's period-finding factorization,
-                deploy an active hybrid ML-KEM-768 gateway, and sequence zero-downtime cryptographic migration.
-            </p>
-            <div class="hero-actions">
-                <button id="heroScanBtn" class="btn-primary">
-                    <span>⚡ Run First Scan on QuantumBank</span>
-                </button>
-                <label class="btn-secondary" style="cursor: pointer;">
-                    <span>📂 Upload Custom Repository ZIP</span>
-                    <input type="file" id="zipUploadInput" accept=".zip" style="display: none;">
-                </label>
-            </div>
-
-            <div id="scanProgress" class="scan-progress">
-                <div id="scanStatusText" style="font-size: 0.85rem; font-weight: 600;">Initializing Scanner...</div>
-                <div class="progress-bar-wrap">
-                    <div id="progressBarFill" class="progress-bar-fill"></div>
+            <div class="hero-glow-orb orb-1"></div>
+            <div class="hero-glow-orb orb-2"></div>
+            <div class="hero-content-inner">
+                <div class="hero-badge">Q-HACK INDIA 2026 // LIVE ENTERPRISE DEMO</div>
+                <h2 class="hero-title">Prepare Enterprise Cryptography for Q-Day</h2>
+                <p class="hero-subtitle">
+                    An end-to-end platform to discover quantum-vulnerable algorithms across polyglot repositories,
+                    quantify Harvest-Now-Decrypt-Later exposure, simulate Shor's period-finding factorization,
+                    deploy an active hybrid ML-KEM-768 gateway, and sequence zero-downtime cryptographic migration.
+                </p>
+                <div class="hero-actions">
+                    <button id="heroScanBtn" class="btn-primary glow-pulse">
+                        <span>⚡ Run First Scan on QuantumBank</span>
+                    </button>
+                    <label class="btn-secondary" style="cursor: pointer;">
+                        <span>📂 Upload Custom Repository ZIP</span>
+                        <input type="file" id="zipUploadInput" accept=".zip" style="display: none;">
+                    </label>
                 </div>
-                <div style="font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">
-                    AST Traversal • Comment Stripper • CycloneDX 1.6 Synthesis • FIPS 203 Verification
+
+                <div id="scanProgress" class="scan-progress">
+                    <div id="scanStatusText" style="font-size: 0.85rem; font-weight: 600;">Initializing Scanner...</div>
+                    <div class="progress-bar-wrap">
+                        <div id="progressBarFill" class="progress-bar-fill"></div>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">
+                        AST Traversal • Comment Stripper • CycloneDX 1.6 Synthesis • FIPS 203 Verification
+                    </div>
                 </div>
             </div>
         </section>
@@ -121,7 +140,7 @@
             <div id="pane-step-1" class="step-pane active">
                 
                 <!-- Executive Context Card -->
-                <div class="story-briefing-card">
+                <div class="story-briefing-card step-1-theme">
                     <div class="briefing-tag">EXECUTIVE BRIEFING // STEP 01: DISCOVER</div>
                     <div class="briefing-grid">
                         <div class="briefing-col">
@@ -151,33 +170,37 @@
 
                 <!-- Stats Grid -->
                 <div class="overview-grid">
-                    <div class="stat-card">
+                    <div class="stat-card accent-cyan">
                         <div class="stat-label">Target System</div>
                         <div id="statTargetName" class="stat-val" style="font-size: 1.35rem;">QuantumBank</div>
+                        <div class="stat-sub">Enterprise Banking Monorepo</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card accent-blue">
                         <div class="stat-label">Total Crypto Assets</div>
                         <div id="statTotalAssets" class="stat-val">27</div>
+                        <div class="stat-sub">100% Detection Recall</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card accent-red">
                         <div class="stat-label">Shor-Vulnerable Assets</div>
                         <div id="statVulnAssets" class="stat-val" style="color: var(--status-danger);">24</div>
+                        <div class="stat-sub">RSA, ECDSA, ECDH, Diffie-Hellman</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card accent-amber">
                         <div class="stat-label">Baseline Readiness</div>
                         <div id="statReadinessScore" class="stat-val" style="color: var(--status-warn);">33.0/100</div>
+                        <div class="stat-sub">NIST PQC Assessment</div>
                     </div>
                 </div>
 
-                <!-- Asset Breakdown Badges -->
+                <!-- Asset Breakdown Badges (Vibrant Brand Colors) -->
                 <div class="asset-chips-row">
-                    <div class="asset-chip"><span>Python (payment-api):</span> <strong>6 assets</strong></div>
-                    <div class="asset-chip"><span>Java (customer-db):</span> <strong>6 assets</strong></div>
-                    <div class="asset-chip"><span>Go (ledger-service):</span> <strong>5 assets</strong></div>
-                    <div class="asset-chip"><span>JavaScript (auth-portal):</span> <strong>3 assets</strong></div>
-                    <div class="asset-chip"><span>Server Configurations:</span> <strong>4 assets</strong></div>
-                    <div class="asset-chip"><span>X.509 Certificates:</span> <strong>3 assets</strong></div>
-                    <div class="asset-chip highlight"><span>Comment False Positives:</span> <strong>0 hits</strong></div>
+                    <div class="lang-chip py-chip"><span class="chip-dot"></span><span>Python:</span> <strong>6 assets</strong></div>
+                    <div class="lang-chip java-chip"><span class="chip-dot"></span><span>Java:</span> <strong>6 assets</strong></div>
+                    <div class="lang-chip go-chip"><span class="chip-dot"></span><span>Go:</span> <strong>5 assets</strong></div>
+                    <div class="lang-chip js-chip"><span class="chip-dot"></span><span>JavaScript:</span> <strong>3 assets</strong></div>
+                    <div class="lang-chip conf-chip"><span class="chip-dot"></span><span>Server Configs:</span> <strong>4 assets</strong></div>
+                    <div class="lang-chip cert-chip"><span class="chip-dot"></span><span>X.509 Certs:</span> <strong>3 assets</strong></div>
+                    <div class="lang-chip zero-fp-chip"><span class="chip-dot green"></span><span>Comment False Positives:</span> <strong>0 hits</strong></div>
                 </div>
 
                 <!-- CBOM Table Panel -->
@@ -221,7 +244,7 @@
                     <div class="transition-info">
                         <strong>Stage 01 Complete:</strong> Inventory verified across 27 assets. 24 critical public-key schemes exposed.
                     </div>
-                    <button class="btn-primary step-next-btn" onclick="goToStep(2)">
+                    <button class="btn-primary step-next-btn glow-cyan" onclick="goToStep(2)">
                         <span>Continue to Step 02: Quantify Risk (Mosca Equation) →</span>
                     </button>
                 </div>
@@ -234,7 +257,7 @@
             <div id="pane-step-2" class="step-pane">
                 
                 <!-- Executive Context Card -->
-                <div class="story-briefing-card">
+                <div class="story-briefing-card step-2-theme">
                     <div class="briefing-tag">EXECUTIVE BRIEFING // STEP 02: QUANTIFY RISK</div>
                     <div class="briefing-grid">
                         <div class="briefing-col">
@@ -263,26 +286,26 @@
 
                 <div class="split-grid">
                     <!-- Mosca Simulator Card -->
-                    <div class="panel-card">
+                    <div class="panel-card accent-border-amber">
                         <div class="panel-title">
                             <span>Interactive Mosca's Inequality Simulator</span>
-                            <span id="moscaExposureBadge" class="badge-broken">CRITICAL HNDL EXPOSURE</span>
+                            <span id="moscaExposureBadge" class="badge-broken glow-red">CRITICAL HNDL EXPOSURE</span>
                         </div>
                         <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 16px;">
                             Adjust parameters to model exposure windows across different enterprise data classifications.
                         </p>
 
-                        <!-- Dynamic Timeline Visualizer -->
+                        <!-- Dynamic Timeline Visualizer with Hazard Stripes -->
                         <div class="mosca-timeline-visual">
                             <div class="timeline-bar-bg">
-                                <div id="timelineRiskFill" class="timeline-bar-fill" style="width: 82%;"></div>
+                                <div id="timelineRiskFill" class="timeline-bar-fill hazard-striped" style="width: 82%;"></div>
                                 <div id="timelineQDayMarker" class="timeline-marker" style="left: 78%;" title="Q-Day Horizon (Z)">
                                     <span>Q-Day (Z)</span>
                                 </div>
                             </div>
                             <div class="timeline-labels">
                                 <span>Today</span>
-                                <span id="timelineRiskEndLabel">Exposure Horizon: 12.3 yrs</span>
+                                <span id="timelineRiskEndLabel" style="color: var(--status-danger); font-weight: 700;">Exposure Horizon: 12.3 yrs</span>
                                 <span>25 Years</span>
                             </div>
                         </div>
@@ -291,7 +314,7 @@
                             <div>
                                 <div class="slider-row-header">
                                     <span>Data Shelf-Life (X): Legal Retention Mandate</span>
-                                    <strong id="valX" style="color: var(--accent-primary);">10.0 yrs</strong>
+                                    <strong id="valX" style="color: #F59E0B;">10.0 yrs</strong>
                                 </div>
                                 <input type="range" id="sliderX" min="1" max="40" step="0.5" value="10" style="width: 100%;">
                                 <div style="font-size: 0.72rem; color: var(--text-muted);">Financial transactions: 10y | Healthcare: 25y | Defense: 30y+</div>
@@ -300,7 +323,7 @@
                             <div>
                                 <div class="slider-row-header">
                                     <span>Migration Window (Y): Time to Refactor Code & Deploy PQC</span>
-                                    <strong id="valY" style="color: var(--accent-primary);">2.3 yrs</strong>
+                                    <strong id="valY" style="color: #F59E0B;">2.3 yrs</strong>
                                 </div>
                                 <input type="range" id="sliderY" min="0.5" max="10" step="0.1" value="2.3" style="width: 100%;">
                                 <div style="font-size: 0.72rem; color: var(--text-muted);">Enterprise banking average refactor & PKI rekey window</div>
@@ -309,14 +332,14 @@
                             <div>
                                 <div class="slider-row-header">
                                     <span>Time to Q-Day (Z): Emergence of Cryptanalytically Relevant Quantum Computer</span>
-                                    <strong id="valZ" style="color: var(--accent-primary);">12.0 yrs</strong>
+                                    <strong id="valZ" style="color: #38BDF8;">12.0 yrs</strong>
                                 </div>
                                 <input type="range" id="sliderZ" min="3" max="25" step="0.5" value="12" style="width: 100%;">
                                 <div style="font-size: 0.72rem; color: var(--text-muted);">Industry & NIST consensus estimates: ~2036-2038</div>
                             </div>
                         </div>
 
-                        <div id="moscaVerdictBox" class="mosca-verdict-box" style="margin-top: 18px;">
+                        <div id="moscaVerdictBox" class="mosca-verdict-box warning-box" style="margin-top: 18px;">
                             <div id="moscaHorizonText" style="font-weight: 700; color: var(--status-danger);">
                                 Horizon: X (10.0y) + Y (2.3y) = 12.3y > Q-Day (12.0y)
                             </div>
@@ -350,37 +373,37 @@
                                     <tr>
                                         <td><strong>AES-128</strong></td>
                                         <td>128 bits</td>
-                                        <td style="color: var(--status-warn);">64 bits</td>
+                                        <td style="color: var(--status-warn); font-weight: bold;">64 bits</td>
                                         <td><span class="badge-weakened">Weakened</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>AES-256</strong></td>
                                         <td>256 bits</td>
-                                        <td style="color: var(--status-safe);">128 bits</td>
+                                        <td style="color: var(--status-safe); font-weight: bold;">128 bits</td>
                                         <td><span class="badge-safe">Resilient</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>3DES</strong></td>
                                         <td>112 bits</td>
-                                        <td style="color: var(--status-danger);">56 bits</td>
+                                        <td style="color: var(--status-danger); font-weight: bold;">56 bits</td>
                                         <td><span class="badge-broken">Broken</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>SHA-256</strong></td>
                                         <td>256 bits</td>
-                                        <td style="color: var(--status-safe);">128 bits (collision)</td>
+                                        <td style="color: var(--status-safe); font-weight: bold;">128 bits (collision)</td>
                                         <td><span class="badge-safe">Resilient</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>RSA-2048</strong></td>
                                         <td>112 bits equiv.</td>
-                                        <td style="color: var(--status-danger);">0 bits (Shor)</td>
+                                        <td style="color: var(--status-danger); font-weight: bold;">0 bits (Shor)</td>
                                         <td><span class="badge-broken">Broken</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>ECDSA P-256</strong></td>
                                         <td>128 bits equiv.</td>
-                                        <td style="color: var(--status-danger);">0 bits (Shor)</td>
+                                        <td style="color: var(--status-danger); font-weight: bold;">0 bits (Shor)</td>
                                         <td><span class="badge-broken">Broken</span></td>
                                     </tr>
                                 </tbody>
@@ -398,7 +421,7 @@
                     <div class="transition-info">
                         <strong>Stage 02 Complete:</strong> Mosca risk quantified at 12.3 years. Legacy public-key algorithms fail completely.
                     </div>
-                    <button class="btn-primary step-next-btn" onclick="goToStep(3)">
+                    <button class="btn-primary step-next-btn glow-amber" onclick="goToStep(3)">
                         <span>Continue to Step 03: Quantum Threat (Shor's Algorithm) →</span>
                     </button>
                 </div>
@@ -411,7 +434,7 @@
             <div id="pane-step-3" class="step-pane">
                 
                 <!-- Executive Context Card -->
-                <div class="story-briefing-card">
+                <div class="story-briefing-card step-3-theme">
                     <div class="briefing-tag">EXECUTIVE BRIEFING // STEP 03: QUANTUM THREAT LABORATORY</div>
                     <div class="briefing-grid">
                         <div class="briefing-col">
@@ -440,17 +463,17 @@
 
                 <!-- Quantum Suite Sub-Navigation -->
                 <div class="subnav-pills-row">
-                    <button class="subnav-pill active" onclick="switchQuantumSub('shor-spectrum')">3A. Shor Period Finding & Spectrum</button>
-                    <button class="subnav-pill" onclick="switchQuantumSub('circuit-view')">3B. Animated Quantum Circuit</button>
-                    <button class="subnav-pill" onclick="switchQuantumSub('factor-race')">3C. Classical vs Quantum Race</button>
-                    <button class="subnav-pill" onclick="switchQuantumSub('qubit-scaling')">3D. Hardware & Scaling Telemetry</button>
-                    <button class="subnav-pill" onclick="switchQuantumSub('bloch-phase')">3E. Phase & Superposition Density</button>
+                    <button class="subnav-pill active q-pill" onclick="switchQuantumSub('shor-spectrum')">3A. Shor Period Finding & Spectrum</button>
+                    <button class="subnav-pill q-pill" onclick="switchQuantumSub('circuit-view')">3B. Animated Quantum Circuit</button>
+                    <button class="subnav-pill q-pill" onclick="switchQuantumSub('factor-race')">3C. Classical vs Quantum Race</button>
+                    <button class="subnav-pill q-pill" onclick="switchQuantumSub('qubit-scaling')">3D. Hardware & Scaling Telemetry</button>
+                    <button class="subnav-pill q-pill" onclick="switchQuantumSub('bloch-phase')">3E. Phase & Superposition Density</button>
                 </div>
 
                 <!-- 3A: Shor Period-Finding & Fourier Spectrum -->
                 <div id="qsub-shor-spectrum" class="quantum-subpane active">
                     <div class="split-grid">
-                        <div class="panel-card">
+                        <div class="panel-card accent-border-purple">
                             <div class="panel-title">
                                 <span>Shor Statevector Period Finding</span>
                                 <span class="badge-tag">Exact Statevector</span>
@@ -467,18 +490,18 @@
                                     <option value="221">N = 221 (13 × 17)</option>
                                     <option value="247">N = 247 (13 × 19)</option>
                                 </select>
-                                <button id="runShorBtn" class="btn-primary" style="padding: 8px 16px; font-size: 0.84rem;">Run Period-Finding</button>
+                                <button id="runShorBtn" class="btn-primary glow-purple" style="padding: 8px 16px; font-size: 0.84rem;">Run Period-Finding</button>
                             </div>
 
-                            <div id="shorOutputText" class="code-terminal-box">
+                            <div id="shorOutputText" class="code-terminal-box terminal-purple">
                                 Executing statevector simulation...
                             </div>
                         </div>
 
-                        <div class="panel-card">
+                        <div class="panel-card accent-border-purple">
                             <div class="panel-title">
                                 <span>Quantum Fourier Interference Peaks</span>
-                                <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">P(s) = |⟨s|ψ⟩|²</span>
+                                <span style="font-size: 0.78rem; font-family: var(--font-mono); color: #C084FC;">P(s) = |⟨s|ψ⟩|²</span>
                             </div>
                             <div id="shorSvgWrap" style="margin-top: 8px;">
                                 <!-- SVG Rendered Dynamically -->
@@ -492,7 +515,7 @@
 
                 <!-- 3B: Animated Quantum Circuit Visualizer -->
                 <div id="qsub-circuit-view" class="quantum-subpane" style="display: none;">
-                    <div class="panel-card">
+                    <div class="panel-card accent-border-purple">
                         <div class="panel-header-row">
                             <div>
                                 <h3 style="font-size: 1.1rem; font-weight: 700;">Multi-Qubit Shor Circuit Architecture</h3>
@@ -500,17 +523,17 @@
                             </div>
                             <div style="display: flex; gap: 8px;">
                                 <button class="btn-secondary" style="font-size: 0.78rem; padding: 6px 12px;" onclick="stepCircuitStage(-1)">◀ Prev Stage</button>
-                                <button class="btn-primary" style="font-size: 0.78rem; padding: 6px 14px;" onclick="stepCircuitStage(1)">Next Stage ▶</button>
+                                <button class="btn-primary glow-purple" style="font-size: 0.78rem; padding: 6px 14px;" onclick="stepCircuitStage(1)">Next Stage ▶</button>
                                 <button class="btn-secondary" style="font-size: 0.78rem; padding: 6px 12px;" onclick="toggleCircuitPlay()">⚡ Auto Play</button>
                             </div>
                         </div>
 
-                        <!-- Circuit Diagram Stage SVG -->
-                        <div id="circuitSvgWrap" style="margin: 16px 0;">
+                        <!-- Circuit Diagram Stage SVG with Photon Particle Animation -->
+                        <div id="circuitSvgWrap" class="circuit-canvas-wrap" style="margin: 16px 0;">
                             <!-- Circuit SVG dynamically drawn -->
                         </div>
 
-                        <div id="circuitStageExplanation" class="circuit-explanation-box">
+                        <div id="circuitStageExplanation" class="circuit-explanation-box highlight-purple">
                             <strong>Stage 1: Initialization & Superposition:</strong> All counting qubits pass through Hadamard gates $H^{\otimes n}$ to create an equal superposition across all $2^n$ computational states simultaneously.
                         </div>
                     </div>
@@ -537,14 +560,14 @@
                                 <option value="1024">RSA-1024 (Legacy Enterprise)</option>
                                 <option value="2048" selected>RSA-2048 (Standard Banking Modulus)</option>
                             </select>
-                            <button id="startRaceBtn" class="btn-primary" onclick="startFactorizationRace()">Start Race Simulation</button>
+                            <button id="startRaceBtn" class="btn-primary glow-pulse" onclick="startFactorizationRace()">Start Race Simulation</button>
                         </div>
 
                         <div class="race-lanes-container">
                             <!-- Classical Lane -->
-                            <div class="race-lane">
+                            <div class="race-lane classical-lane">
                                 <div class="lane-header">
-                                    <span>Classical Algorithm (GNFS / Pollard's Rho)</span>
+                                    <span>⚙️ Classical Algorithm (GNFS / Pollard's Rho)</span>
                                     <span class="lane-complexity">O(e^(c (ln N)^(1/3) (ln ln N)^(2/3)))</span>
                                 </div>
                                 <div class="lane-bar-track">
@@ -552,22 +575,22 @@
                                 </div>
                                 <div class="lane-stats">
                                     <span id="classicalTimeEst">Estimated Time: 300,000,000 CPU-Years</span>
-                                    <span id="classicalStatusText" style="color: var(--status-danger);">Exponential Stall</span>
+                                    <span id="classicalStatusText" style="color: var(--status-danger); font-weight: bold;">Exponential Stall</span>
                                 </div>
                             </div>
 
                             <!-- Quantum Lane -->
-                            <div class="race-lane">
+                            <div class="race-lane quantum-lane">
                                 <div class="lane-header">
-                                    <span>Quantum Algorithm (Shor Period-Finding)</span>
+                                    <span>🚀 Quantum Algorithm (Shor Period-Finding)</span>
                                     <span class="lane-complexity">O((log N)³ Log Log N) [Polynomial]</span>
                                 </div>
                                 <div class="lane-bar-track">
-                                    <div id="quantumRaceBar" class="lane-bar-fill quantum" style="width: 0%;"></div>
+                                    <div id="quantumRaceBar" class="lane-bar-fill quantum warp-trail" style="width: 0%;"></div>
                                 </div>
                                 <div class="lane-stats">
                                     <span id="quantumTimeEst">Estimated Time: 8.2 Hours</span>
-                                    <span id="quantumStatusText" style="color: var(--status-safe);">Polynomial Convergence</span>
+                                    <span id="quantumStatusText" style="color: var(--status-safe); font-weight: bold;">Polynomial Convergence</span>
                                 </div>
                             </div>
                         </div>
@@ -576,7 +599,7 @@
 
                 <!-- 3D: Hardware Telemetry & Gidney-Ekerå Scaling -->
                 <div id="qsub-qubit-scaling" class="quantum-subpane" style="display: none;">
-                    <div class="panel-card">
+                    <div class="panel-card accent-border-blue">
                         <div class="panel-title">
                             <span>Superconducting Hardware Scaling Telemetry (Gidney-Ekerå Model)</span>
                             <span class="badge-safe">NIST / arXiv:2505.15917 Verified</span>
@@ -596,9 +619,9 @@
                         </div>
 
                         <div class="telemetry-grid">
-                            <div class="telemetry-stat">
+                            <div class="telemetry-stat card-glow-cyan">
                                 <div class="t-label">Logical Qubits Required</div>
-                                <div id="telLogicalQubits" class="t-val">4,098</div>
+                                <div id="telLogicalQubits" class="t-val" style="color: #38BDF8;">4,098</div>
                                 <div class="t-sub">2n + 2 qubits for in-place modular arithmetic</div>
                             </div>
                             <div class="telemetry-stat">
@@ -606,14 +629,14 @@
                                 <div id="telQubits2019" class="t-val">20,000,000</div>
                                 <div class="t-sub">Surface code distance d=27, p=10⁻³</div>
                             </div>
-                            <div class="telemetry-stat">
+                            <div class="telemetry-stat card-glow-purple">
                                 <div class="t-label">Physical Qubits (Gidney 2025)</div>
-                                <div id="telQubits2025" class="t-val" style="color: var(--accent-primary);">980,000</div>
+                                <div id="telQubits2025" class="t-val" style="color: #A855F7;">980,000</div>
                                 <div class="t-sub">Optimized magic state distillation (<1M qubits)</div>
                             </div>
-                            <div class="telemetry-stat">
+                            <div class="telemetry-stat card-glow-green">
                                 <div class="t-label">Estimated Execution Time</div>
-                                <div id="telRuntime" class="t-val">8 Hours</div>
+                                <div id="telRuntime" class="t-val" style="color: #10B981;">8 Hours</div>
                                 <div class="t-sub">At 1 microsecond surface code reaction time</div>
                             </div>
                             <div class="telemetry-stat">
@@ -633,7 +656,7 @@
                 <!-- 3E: Phase & Superposition Density -->
                 <div id="qsub-bloch-phase" class="quantum-subpane" style="display: none;">
                     <div class="split-grid">
-                        <div class="panel-card">
+                        <div class="panel-card accent-border-purple">
                             <div class="panel-title">
                                 <span>Bloch Sphere Phase Kickback Visualizer</span>
                                 <span class="badge-tag">e^(2πi s/r)</span>
@@ -649,7 +672,7 @@
                             </div>
                         </div>
 
-                        <div class="panel-card">
+                        <div class="panel-card accent-border-purple">
                             <div class="panel-title">
                                 <span>State Superposition Density Heatmap</span>
                                 <span class="badge-tag">256 Amplitudes</span>
@@ -672,7 +695,7 @@
                     <div class="transition-info">
                         <strong>Stage 03 Complete:</strong> Shor's algorithm factored RSA moduli in polynomial time. Classical crypto cannot survive.
                     </div>
-                    <button class="btn-primary step-next-btn" onclick="goToStep(4)">
+                    <button class="btn-primary step-next-btn glow-purple" onclick="goToStep(4)">
                         <span>Continue to Step 04: Active Defense (Hybrid PQC Gateway) →</span>
                     </button>
                 </div>
@@ -685,7 +708,7 @@
             <div id="pane-step-4" class="step-pane">
                 
                 <!-- Executive Context Card -->
-                <div class="story-briefing-card">
+                <div class="story-briefing-card step-4-theme">
                     <div class="briefing-tag">EXECUTIVE BRIEFING // STEP 04: ACTIVE HYBRID DEFENSE</div>
                     <div class="briefing-grid">
                         <div class="briefing-col">
@@ -714,28 +737,28 @@
 
                 <!-- PQC Sub-Navigation -->
                 <div class="subnav-pills-row">
-                    <button class="subnav-pill active" onclick="switchPqcSub('wire-inspector')">4A. Wire Byte Inspector (8,954 B)</button>
-                    <button class="subnav-pill" onclick="switchPqcSub('mitm-harness')">4B. MITM Attack Playground</button>
-                    <button class="subnav-pill" onclick="switchPqcSub('benchmark-latency')">4C. Size & Latency Comparison</button>
-                    <button class="subnav-pill" onclick="switchPqcSub('terminal-stream')">4D. Live Cryptographic Logs</button>
-                    <button class="subnav-pill" onclick="switchPqcSub('entropy-diff')">4E. Ciphertext Entropy Diff</button>
-                    <button class="subnav-pill" onclick="switchPqcSub('handshake-ladder')">4F. TLS 1.3 Sequence Flow</button>
-                    <button class="subnav-pill" onclick="switchPqcSub('secure-chat')">4G. Live Encrypted Channel</button>
+                    <button class="subnav-pill active d-pill" onclick="switchPqcSub('wire-inspector')">4A. Wire Byte Inspector (8,954 B)</button>
+                    <button class="subnav-pill d-pill" onclick="switchPqcSub('mitm-harness')">4B. MITM Attack Playground</button>
+                    <button class="subnav-pill d-pill" onclick="switchPqcSub('benchmark-latency')">4C. Size & Latency Comparison</button>
+                    <button class="subnav-pill d-pill" onclick="switchPqcSub('terminal-stream')">4D. Live Cryptographic Logs</button>
+                    <button class="subnav-pill d-pill" onclick="switchPqcSub('entropy-diff')">4E. Ciphertext Entropy Diff</button>
+                    <button class="subnav-pill d-pill" onclick="switchPqcSub('handshake-ladder')">4F. TLS 1.3 Sequence Flow</button>
+                    <button class="subnav-pill d-pill" onclick="switchPqcSub('secure-chat')">4G. Live Encrypted Channel</button>
                 </div>
 
                 <!-- 4A: Wire Byte Inspector -->
                 <div id="pqcsub-wire-inspector" class="pqc-subpane active">
-                    <div class="panel-card">
+                    <div class="panel-card accent-border-green">
                         <div class="panel-title">
                             <span>NIST FIPS 203/204 Handshake Byte Inspector (Total: 8,954 Bytes)</span>
-                            <span class="badge-safe">Exact Wire Footprint</span>
+                            <span class="badge-safe glow-green">Exact Wire Footprint</span>
                         </div>
                         <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 16px;">
                             Click any segment to inspect cryptographic payload parameters, NIST standard citations, and byte hex samples.
                         </p>
 
-                        <!-- Segmented Wire Bar -->
-                        <div class="wire-segmented-bar">
+                        <!-- Segmented Wire Bar with Candy/Neon Sections -->
+                        <div class="wire-segmented-bar glow-wire">
                             <div class="wire-seg seg-kem-pk" style="width: 13.2%;" onclick="inspectWireSegment(0)" title="ML-KEM-768 Public Key (1,184 B)">
                                 <span>KEM PK (1,184 B)</span>
                             </div>
@@ -774,35 +797,41 @@
 
                 <!-- 4B: MITM Attack Playground -->
                 <div id="pqcsub-mitm-harness" class="pqc-subpane" style="display: none;">
-                    <div class="panel-card">
+                    <div class="panel-card accent-border-green">
                         <div class="panel-title">
                             <span>Interactive Man-in-the-Middle Attack Harness</span>
                             <span class="badge-tag">Adversary Simulation</span>
                         </div>
                         <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 16px;">
-                            Trigger real adversary attacks against the active hybrid channel and observe cryptographic defenses.
+                            Trigger real adversary attacks against the active hybrid channel and observe cryptographic defenses in action.
                         </p>
 
-                        <!-- Visual Network Topology -->
-                        <div class="network-topology-card">
-                            <div class="topo-node client-node">
+                        <!-- Visual Network Topology with Laser / Shield Elements -->
+                        <div class="network-topology-card" id="networkTopologyCard">
+                            <div class="topo-node client-node card-glow-cyan">
                                 <div class="topo-icon">💻</div>
                                 <strong>Client Banking App</strong>
                                 <small>X25519 + ML-KEM-768</small>
                             </div>
-                            <div class="topo-channel">
+                            
+                            <div class="topo-channel channel-left">
                                 <div class="channel-line"></div>
-                                <div id="topoPacket" class="topo-packet">📦</div>
+                                <div id="topoPacket" class="topo-packet packet-pulse">📦</div>
                             </div>
-                            <div class="topo-node mitm-node" id="mitmNodeBox">
+                            
+                            <div class="topo-node mitm-node card-glow-purple" id="mitmNodeBox">
                                 <div class="topo-icon">🕵️</div>
                                 <strong>Adversary Interceptor</strong>
                                 <small>Active MITM Tap</small>
+                                <div id="mitmLaser" class="mitm-laser-beam"></div>
                             </div>
-                            <div class="topo-channel">
+                            
+                            <div class="topo-channel channel-right">
                                 <div class="channel-line"></div>
                             </div>
-                            <div class="topo-node server-node">
+                            
+                            <div class="topo-node server-node card-glow-green" id="serverNodeBox">
+                                <div class="server-shield-ripple" id="serverShieldRipple"></div>
                                 <div class="topo-icon">🏦</div>
                                 <strong>Q-SHIELD Gateway</strong>
                                 <small>FIPS 203/204 Server</small>
@@ -811,13 +840,13 @@
 
                         <!-- Attack Triggers -->
                         <div style="display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap;">
-                            <button id="pqcTamperBtn" class="btn-secondary" style="border-color: var(--status-danger); color: var(--status-danger);">
+                            <button id="pqcTamperBtn" class="btn-secondary attack-btn-red">
                                 ⚡ Inject 1-Bit Ciphertext Flip (Test MAC Rejection)
                             </button>
-                            <button id="pqcReplayBtn" class="btn-secondary" style="border-color: var(--status-warn); color: var(--status-warn);">
+                            <button id="pqcReplayBtn" class="btn-secondary attack-btn-amber">
                                 🔄 Simulate Replay Attack (Test Nonce Window)
                             </button>
-                            <button id="pqcMitmBtn" class="btn-secondary" style="border-color: #A855F7; color: #A855F7;">
+                            <button id="pqcMitmBtn" class="btn-secondary attack-btn-purple">
                                 🔓 Forge Classical Signature (Test Lattice Auth)
                             </button>
                         </div>
@@ -861,7 +890,7 @@
                             <div class="bench-row">
                                 <span class="bench-label">Hybrid Q-SHIELD (X25519 + ML-KEM + ML-DSA)</span>
                                 <div class="bench-track">
-                                    <div class="bench-fill" style="width: 100%; background: var(--status-safe);">8,954 B</div>
+                                    <div class="bench-fill glow-green" style="width: 100%; background: var(--status-safe);">8,954 B</div>
                                 </div>
                                 <span class="bench-vuln" style="color: var(--status-safe);">100% Defense Grade</span>
                             </div>
@@ -885,7 +914,7 @@
                             <div class="bench-row">
                                 <span class="bench-label">Hybrid Q-SHIELD</span>
                                 <div class="bench-track">
-                                    <div class="bench-fill" style="width: 100%; background: var(--status-safe);">1.6 ms</div>
+                                    <div class="bench-fill glow-green" style="width: 100%; background: var(--status-safe);">1.6 ms</div>
                                 </div>
                                 <span class="bench-vuln">Negligible 0.8ms Delta</span>
                             </div>
@@ -899,10 +928,10 @@
 
                 <!-- 4D: Live Cryptographic Console Log -->
                 <div id="pqcsub-terminal-stream" class="pqc-subpane" style="display: none;">
-                    <div class="panel-card">
+                    <div class="panel-card accent-border-green">
                         <div class="panel-title">
                             <span>Cryptographic Subsystem Monospace Telemetry Stream</span>
-                            <span class="badge-tag">Live OpenSSL / FIPS Hooks</span>
+                            <span class="badge-safe glow-green">Live OpenSSL / FIPS Hooks</span>
                         </div>
                         <div class="crypto-log-terminal" id="cryptoLogStream">
                             <!-- Populated with streaming logs -->
@@ -913,10 +942,10 @@
                 <!-- 4E: Ciphertext Entropy Diff -->
                 <div id="pqcsub-entropy-diff" class="pqc-subpane" style="display: none;">
                     <div class="split-grid">
-                        <div class="panel-card">
+                        <div class="panel-card accent-border-red">
                             <div class="panel-title">
                                 <span>Classical RSA-2048 Ciphertext Structure</span>
-                                <span class="badge-broken">Algebraic Symmetry</span>
+                                <span class="badge-broken glow-red">Algebraic Symmetry</span>
                             </div>
                             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 12px;">
                                 RSA ciphertexts $c \equiv m^e \pmod N$ preserve modular group homomorphisms, enabling period-finding attacks.
@@ -930,10 +959,10 @@
                             </div>
                         </div>
 
-                        <div class="panel-card">
+                        <div class="panel-card accent-border-green">
                             <div class="panel-title">
                                 <span>ML-KEM-768 Lattice Ciphertext Structure</span>
-                                <span class="badge-safe">Learning-With-Errors Noise</span>
+                                <span class="badge-safe glow-green">Learning-With-Errors Noise</span>
                             </div>
                             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 12px;">
                                 Lattice vector $u = A^T r + e_1$ contains discrete Gaussian noise vectors over $R_q$, destroying abelian symmetries.
@@ -999,7 +1028,7 @@
                                 </div>
                                 <span class="ladder-actor server">Server</span>
                             </div>
-                            <div class="ladder-step secure-traffic">
+                            <div class="ladder-step secure-traffic glow-green">
                                 <span class="ladder-actor client">Client</span>
                                 <div class="ladder-arrow bidirectional">
                                     <span>7. Application Data (AES-256-GCM Encrypted Channel)</span>
@@ -1012,10 +1041,10 @@
 
                 <!-- 4G: Live Encrypted Messaging Channel -->
                 <div id="pqcsub-secure-chat" class="pqc-subpane" style="display: none;">
-                    <div class="panel-card" style="max-width: 800px; margin: 0 auto;">
+                    <div class="panel-card accent-border-green" style="max-width: 800px; margin: 0 auto;">
                         <div class="panel-title">
                             <span>Live PQC Encrypted Channel Console</span>
-                            <span class="badge-safe">AES-256-GCM Tunnel</span>
+                            <span class="badge-safe glow-green">AES-256-GCM Tunnel</span>
                         </div>
                         <div id="pqcChatStream" class="chat-stream" style="height: 240px;">
                             <div class="chat-msg agent">
@@ -1024,7 +1053,7 @@
                         </div>
                         <div class="chat-input-row">
                             <input type="text" id="pqcMsgInput" placeholder="Enter sensitive transaction payload..." style="flex: 1;">
-                            <button id="pqcSendBtn" class="btn-primary" style="padding: 10px 16px;">Send Secure Message</button>
+                            <button id="pqcSendBtn" class="btn-primary glow-green" style="padding: 10px 16px;">Send Secure Message</button>
                         </div>
                     </div>
                 </div>
@@ -1034,7 +1063,7 @@
                     <div class="transition-info">
                         <strong>Stage 04 Complete:</strong> PQC Gateway active. Wire defenses validated against bit-flips and replay.
                     </div>
-                    <button class="btn-primary step-next-btn" onclick="goToStep(5)">
+                    <button class="btn-primary step-next-btn glow-green" onclick="goToStep(5)">
                         <span>Continue to Step 05: Agile Migration & AI Copilot →</span>
                     </button>
                 </div>
@@ -1047,7 +1076,7 @@
             <div id="pane-step-5" class="step-pane">
                 
                 <!-- Executive Context Card -->
-                <div class="story-briefing-card">
+                <div class="story-briefing-card step-5-theme">
                     <div class="briefing-tag">EXECUTIVE BRIEFING // STEP 05: AGILE MIGRATION & COMPLIANCE</div>
                     <div class="briefing-grid">
                         <div class="briefing-col">
@@ -1077,7 +1106,7 @@
                 <div class="split-grid">
                     <!-- Migration Roadmap Column -->
                     <div>
-                        <div class="panel-card" style="margin-bottom: 20px;">
+                        <div class="panel-card accent-border-gold" style="margin-bottom: 20px;">
                             <div class="panel-header-row">
                                 <div>
                                     <h3 style="font-size: 1.15rem; font-weight: 700;">4-Phase Crypto-Agility Migration Roadmap</h3>
@@ -1096,10 +1125,10 @@
                                 <span class="badge-tag">CI/CD Gate Integration</span>
                             </div>
                             <div style="display: flex; gap: 12px; margin: 14px 0; flex-wrap: wrap;">
-                                <a href="/api/export/cyclonedx" download class="btn-primary" style="text-decoration: none; font-size: 0.84rem;">
+                                <a href="/api/export/cyclonedx" download class="btn-primary glow-cyan" style="text-decoration: none; font-size: 0.84rem;">
                                     📥 Download CycloneDX 1.6 CBOM (JSON)
                                 </a>
-                                <a href="/api/export/report" download class="btn-secondary" style="text-decoration: none; font-size: 0.84rem;">
+                                <a href="/api/export/report" download class="btn-secondary glow-gold" style="text-decoration: none; font-size: 0.84rem;">
                                     📄 Download Executive Risk Audit Report (Markdown)
                                 </a>
                             </div>
@@ -1110,10 +1139,10 @@
                     </div>
 
                     <!-- AI Copilot Column -->
-                    <div class="panel-card">
+                    <div class="panel-card accent-border-gold">
                         <div class="panel-title">
                             <span>Grounded AI Security Copilot</span>
-                            <span class="badge-safe">0 Hallucinations // Grounded in CBOM</span>
+                            <span class="badge-safe glow-gold">0 Hallucinations // Grounded in CBOM</span>
                         </div>
                         <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 12px;">
                             Ask strategic questions. Every answer verifies finding IDs against the active SQLite database.
@@ -1134,7 +1163,7 @@
 
                         <div class="chat-input-row" style="margin-top: 10px;">
                             <input type="text" id="copilotInput" placeholder="Ask a question about your crypto inventory or remediation..." style="flex: 1; font-size: 0.84rem;">
-                            <button id="copilotSendBtn" class="btn-primary" style="padding: 8px 16px;">Ask Copilot</button>
+                            <button id="copilotSendBtn" class="btn-primary glow-gold" style="padding: 8px 16px;">Ask Copilot</button>
                         </div>
                     </div>
                 </div>
@@ -1144,7 +1173,7 @@
                     <div class="transition-info">
                         <strong>Demo Completed:</strong> Q-SHIELD delivers the closed loop from Discovery to Quantum Simulation, PQC Defense, and Agile Code Migration.
                     </div>
-                    <button class="btn-secondary" onclick="goToStep(1)">
+                    <button class="btn-secondary glow-cyan" onclick="goToStep(1)">
                         <span>↺ Restart Walkthrough from Step 01</span>
                     </button>
                 </div>
