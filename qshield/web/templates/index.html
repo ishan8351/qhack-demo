@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q-SHIELD — End-to-End Quantum Security Platform</title>
+    <title>Q-SHIELD: End-to-End Quantum Security Platform</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -105,9 +105,9 @@
                 <div class="hero-badge">Q-HACK INDIA 2026 // LIVE ENTERPRISE DEMO</div>
                 <h2 class="hero-title">Prepare Enterprise Cryptography for Q-Day</h2>
                 <p class="hero-subtitle">
-                    An end-to-end platform to discover quantum-vulnerable algorithms across polyglot repositories,
-                    quantify Harvest-Now-Decrypt-Later exposure, simulate Shor's period-finding factorization,
-                    deploy an active hybrid ML-KEM-768 gateway, and sequence zero-downtime cryptographic migration.
+                    A platform to discover vulnerable cryptography across polyglot repositories,
+                    quantify harvest-now-decrypt-later risk, simulate Shor's period-finding algorithm,
+                    run an active hybrid ML-KEM-768 gateway, and plan migration without downtime.
                 </p>
                 <div class="hero-actions">
                     <button id="heroScanBtn" class="btn-primary glow-pulse">
@@ -411,7 +411,7 @@
                         </div>
 
                         <div style="margin-top: 16px; padding: 12px; background: var(--bg-base); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.78rem; color: var(--text-secondary);">
-                            <strong>Key Rule:</strong> Public-key schemes (RSA/ECC) are completely broken by Shor's algorithm ($0\text{ bits}$). Symmetric ciphers must double key lengths to 256 bits (AES-256) to retain 128-bit quantum strength.
+                            <strong>Security margin:</strong> Shor's algorithm breaks public-key algorithms (RSA and ECC) entirely. Symmetric ciphers require 256-bit keys (such as AES-256) to preserve a 128-bit post-quantum security margin.
                         </div>
                     </div>
                 </div>
@@ -738,7 +738,7 @@
                 <!-- PQC Sub-Navigation -->
                 <div class="subnav-pills-row">
                     <button class="subnav-pill active d-pill" onclick="switchPqcSub('wire-inspector')">4A. Wire Byte Inspector (8,954 B)</button>
-                    <button class="subnav-pill d-pill" onclick="switchPqcSub('mitm-harness')">4B. MITM Attack Playground</button>
+                    <button class="subnav-pill d-pill" onclick="switchPqcSub('mitm-harness')">4B. MITM Attack Test Bench</button>
                     <button class="subnav-pill d-pill" onclick="switchPqcSub('benchmark-latency')">4C. Size & Latency Comparison</button>
                     <button class="subnav-pill d-pill" onclick="switchPqcSub('terminal-stream')">4D. Live Cryptographic Logs</button>
                     <button class="subnav-pill d-pill" onclick="switchPqcSub('entropy-diff')">4E. Ciphertext Entropy Diff</button>
@@ -799,7 +799,7 @@
                 <div id="pqcsub-mitm-harness" class="pqc-subpane" style="display: none;">
                     <div class="panel-card accent-border-green">
                         <div class="panel-title">
-                            <span>Interactive Man-in-the-Middle Attack Harness</span>
+                            <span>Interactive Man-in-the-Middle Attack Simulation</span>
                             <span class="badge-tag">Adversary Simulation</span>
                         </div>
                         <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 16px;">
@@ -863,7 +863,7 @@
                 <div id="pqcsub-benchmark-latency" class="pqc-subpane" style="display: none;">
                     <div class="panel-card">
                         <div class="panel-title">
-                            <span>Cryptographic Overhead: Classical TLS vs Pure PQC vs Hybrid Q-SHIELD</span>
+                            <span>Overhead Comparison: Classical TLS, Pure PQC, and Hybrid Q-SHIELD</span>
                             <span class="badge-tag">Empirical Benchmarks</span>
                         </div>
                         <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 18px;">
@@ -921,7 +921,7 @@
                         </div>
 
                         <div style="margin-top: 18px; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
-                            <strong>Engineering Rationale:</strong> An 8.9 KB payload is smaller than a single website favicon and adds less than 1 ms of CPU overhead, while providing complete cryptographic immunity against Harvest-Now-Decrypt-Later attacks.
+                            <strong>Network impact:</strong> An 8.9 KB payload is smaller than a typical web favicon and adds less than 1 ms of CPU latency, protecting traffic from harvest-now-decrypt-later attacks.
                         </div>
                     </div>
                 </div>
@@ -1157,7 +1157,7 @@
 
                         <div id="copilotStream" class="chat-stream" style="height: 380px;">
                             <div class="chat-msg agent">
-                                👋 Welcome! I am Q-SHIELD's grounded copilot. I analyze the 27 cryptographic assets cataloged in your CBOM. All recommendations cite verified finding IDs. What would you like to inspect?
+                                I analyze the 27 cryptographic assets in your CBOM. Every recommendation cites a verified finding ID. Ask a question or pick a prompt above to begin.
                             </div>
                         </div>
 
@@ -1171,7 +1171,7 @@
                 <!-- Final Walkthrough Summary Banner -->
                 <div class="step-transition-bar" style="background: var(--bg-surface-elevated); border-color: var(--accent-border);">
                     <div class="transition-info">
-                        <strong>Demo Completed:</strong> Q-SHIELD delivers the closed loop from Discovery to Quantum Simulation, PQC Defense, and Agile Code Migration.
+                        <strong>Demo Completed:</strong> Q-SHIELD covers every stage from discovery and quantum simulation to PQC defense and code migration.
                     </div>
                     <button class="btn-secondary glow-cyan" onclick="goToStep(1)">
                         <span>↺ Restart Walkthrough from Step 01</span>
